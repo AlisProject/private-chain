@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Ethereum PoA private net VPC environment.
+
+Globals:
+  Function:
+    Runtime: python3.6
+    Timeout: 15
+    MemorySize: 256
+
+Resources:
