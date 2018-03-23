@@ -188,6 +188,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
       LoadBalancerName: PNELB
+      Scheme: 'internal'
       Subnets:
         - !Ref PNSubNet1
         - !Ref PNSubNet2
@@ -265,22 +266,3 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: f17fb5a9-9ee5-493e-bfd7-0ecd88a9d6fc
-  PNInternetGateway:
-    Type: 'AWS::EC2::InternetGateway'
-    Properties:
-      Tags:
-        - Key: Name
-          Value: PNInternetGateway
-        - Key: Component
-          Value: PrivateNet
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: a2957767-5c8f-4f45-8616-731a185be989
-  PNGatewayAttachment:
-    Type: 'AWS::EC2::VPCGatewayAttachment'
-    Properties:
-      InternetGatewayId: !Ref PNInternetGateway
-      VpcId: !Ref PrivateNet
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: ca607236-1424-476e-ba78-4fdb70ce39e4
