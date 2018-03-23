@@ -1,11 +1,91 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
-Description: Ethereum PoA private net VPC environment.
-
-Globals:
-  Function:
-    Runtime: python3.6
-    Timeout: 15
-    MemorySize: 256
-
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    83453b04-7644-4097-9f67-f65cd55e29a4:
+      size:
+        width: 1360
+        height: 660
+      position:
+        x: 30
+        'y': 250
+      z: 0
+      embeds:
+        - 7956d3bf-0411-47c3-a791-53af78c3db0e
+        - 505abc1b-744b-4f1c-ac1d-4593ee0c8f7d
+    505abc1b-744b-4f1c-ac1d-4593ee0c8f7d:
+      size:
+        width: 890
+        height: 300
+      position:
+        x: 480
+        'y': 270
+      z: 1
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+      iscontainedinside:
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+    7956d3bf-0411-47c3-a791-53af78c3db0e:
+      size:
+        width: 890
+        height: 300
+      position:
+        x: 480
+        'y': 590
+      z: 1
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+      iscontainedinside:
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
 Resources:
+  PrivateNet:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      Tags:
+        - Key: Name
+          Value: PrivateNet
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 83453b04-7644-4097-9f67-f65cd55e29a4
+  PNSubNet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateNet
+      CidrBlock: 10.0.0.0/25
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: PNSubNet1
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 505abc1b-744b-4f1c-ac1d-4593ee0c8f7d
+  PNSubNet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateNet
+      CidrBlock: 10.0.0.128/25
+      AvailabilityZone: ap-northeast-1c
+      Tags:
+        - Key: Name
+          Value: PNSubNet2
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 7956d3bf-0411-47c3-a791-53af78c3db0e
