@@ -1,11 +1,286 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
-Description: Ethereum PoA private net VPC environment.
-
-Globals:
-  Function:
-    Runtime: python3.6
-    Timeout: 15
-    MemorySize: 256
-
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    83453b04-7644-4097-9f67-f65cd55e29a4:
+      size:
+        width: 1480
+        height: 880
+      position:
+        x: 30
+        'y': 240
+      z: 1
+      embeds:
+        - cf4abe3e-4e86-419c-ba19-30e77b475d89
+        - f17fb5a9-9ee5-493e-bfd7-0ecd88a9d6fc
+        - 7956d3bf-0411-47c3-a791-53af78c3db0e
+        - 505abc1b-744b-4f1c-ac1d-4593ee0c8f7d
+        - 6ffe7d8f-706d-477c-abb6-5804e99061fe
+        - df4a2a8d-57ec-470f-9d4b-2fe143094311
+    505abc1b-744b-4f1c-ac1d-4593ee0c8f7d:
+      size:
+        width: 900
+        height: 300
+      position:
+        x: 480
+        'y': 270
+      z: 2
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+      iscontainedinside:
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+    7956d3bf-0411-47c3-a791-53af78c3db0e:
+      size:
+        width: 900
+        height: 300
+      position:
+        x: 480
+        'y': 600
+      z: 2
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+      iscontainedinside:
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+    df4a2a8d-57ec-470f-9d4b-2fe143094311:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 330
+        'y': 540
+      z: 2
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+      iscontainedinside:
+        - 505abc1b-744b-4f1c-ac1d-4593ee0c8f7d
+        - 7956d3bf-0411-47c3-a791-53af78c3db0e
+    6ffe7d8f-706d-477c-abb6-5804e99061fe:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 60
+        'y': 540
+      z: 2
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+    cf4abe3e-4e86-419c-ba19-30e77b475d89:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 170
+        'y': 540
+      z: 2
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+    f17fb5a9-9ee5-493e-bfd7-0ecd88a9d6fc:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 185.90072226062352
+        'y': 285.64564410556784
+      z: 2
+      parent: 83453b04-7644-4097-9f67-f65cd55e29a4
+      embeds: []
+      iscontainedinside:
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+        - 83453b04-7644-4097-9f67-f65cd55e29a4
+    a2957767-5c8f-4f45-8616-731a185be989:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -110
+        'y': 640
+      z: 0
+      embeds: []
+    ca607236-1424-476e-ba78-4fdb70ce39e4:
+      source:
+        id: 83453b04-7644-4097-9f67-f65cd55e29a4
+      target:
+        id: a2957767-5c8f-4f45-8616-731a185be989
+      z: 1
+    ed4a2f0b-e3a7-4c60-b066-91ef3f075323:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -685.976467738346
+        'y': 417.12394482611376
+      z: 0
 Resources:
+  PrivateNet:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      Tags:
+        - Key: Name
+          Value: PrivateNet
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 83453b04-7644-4097-9f67-f65cd55e29a4
+  PNSubNet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateNet
+      CidrBlock: 10.0.0.0/25
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: PNSubNet1
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 505abc1b-744b-4f1c-ac1d-4593ee0c8f7d
+  PNSubNet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateNet
+      CidrBlock: 10.0.0.128/25
+      AvailabilityZone: ap-northeast-1c
+      Tags:
+        - Key: Name
+          Value: PNSubNet2
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 7956d3bf-0411-47c3-a791-53af78c3db0e
+  PNELB:
+    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+    Properties:
+      LoadBalancerName: PNELB
+      Subnets:
+        - !Ref PNSubNet1
+        - !Ref PNSubNet2
+      Listeners:
+        - LoadBalancerPort: '80'
+          InstancePort: '80'
+          Protocol: HTTP
+          InstanceProtocol: HTTP
+      Tags:
+        - Key: Name
+          Value: PNELB
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: df4a2a8d-57ec-470f-9d4b-2fe143094311
+  PNRoleToELB:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        -
+          PolicyName: PNELBFullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: cf4abe3e-4e86-419c-ba19-30e77b475d89
+  GetBalance:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Runtime: python3.6
+      Code:
+        ZipFile: ./tmp.zip
+      Handler: handler.lambda_handler
+      Role: !GetAtt PNRoleToELB.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref PNSecurityGroup
+        SubnetIds:
+          - !Ref PNSubNet1
+          - !Ref PNSubNet2
+      Tags:
+        - Key: Name
+          Value: GetBalance
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 6ffe7d8f-706d-477c-abb6-5804e99061fe
+  PNSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PrivateNet
+      GroupName: PNSecurityGroup
+      GroupDescription: Security Gropu for Private net.
+      Tags:
+        - Key: Name
+          Value: PNSecurityGroup
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: f17fb5a9-9ee5-493e-bfd7-0ecd88a9d6fc
+  PNInternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: PNInternetGateway
+        - Key: Component
+          Value: PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: a2957767-5c8f-4f45-8616-731a185be989
+  PNGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: !Ref PNInternetGateway
+      VpcId: !Ref PrivateNet
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: ca607236-1424-476e-ba78-4fdb70ce39e4
