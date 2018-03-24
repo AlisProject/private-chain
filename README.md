@@ -26,7 +26,15 @@ packer validate ./parity-poa.json
 ```
 
 # CloudFormation
+
+
+## Create EC2 KeyPair
 ```bash
+aws ec2 create-key-pair --key-name private-net
+```
+
+## Deploy
+```bash;
 aws cloudformation deploy \
   --template-file packaged-template.yaml \
   --stack-name YOURSTACKNAMEHERE \

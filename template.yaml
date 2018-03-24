@@ -305,6 +305,7 @@ Resources:
     Properties:
       ImageId: ami-bec974d8
       SubnetId: !Ref PNSubNet1
+      KeyName: private-net
       Tags:
         - Key: Name
           Value: PNParityPoA1a
@@ -318,6 +319,7 @@ Resources:
     Properties:
       ImageId: ami-bec974d8
       SubnetId: !Ref PNSubNet1
+      KeyName: private-net
       Tags:
         - Key: Name
           Value: PNParityPoA2a
@@ -331,6 +333,7 @@ Resources:
     Properties:
       ImageId: ami-bec974d8
       SubnetId: !Ref PNSubNet2
+      KeyName: private-net
       Tags:
         - Key: Name
           Value: PNParityPoA1c
@@ -344,6 +347,7 @@ Resources:
     Properties:
       ImageId: ami-bec974d8 # TODO: Change image to Parity PoA that built by Packer.
       SubnetId: !Ref PNSubNet2
+      KeyName: private-net
       Tags:
         - Key: Name
           Value: PNParityPoA2c
