@@ -342,7 +342,7 @@ Resources:
   PNParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bec974d8
+      ImageId: ami-bec974d8 # TODO: Change image to Parity PoA that built by Packer.
       SubnetId: !Ref PNSubNet2
       Tags:
         - Key: Name

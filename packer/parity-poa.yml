@@ -1,0 +1,11 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Init
+      file: src=/usr/bin/python3 dest=/usr/bin/python owner=root group=root state=link
+
+    - name: Get Parity install script
+      get_url: url="https://get.parity.io" dest=/tmp/parity.sh mode=0755
+
+    - name: Install Parity
+      shell: /tmp/parity.sh
