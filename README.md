@@ -4,6 +4,7 @@
 - pyenv
 - packer
 - ansible
+- jq
 
 # Environment valuables
 ```bash
@@ -35,9 +36,17 @@ aws ec2 create-key-pair --key-name private-net
 
 ## Create EIP and edit template.yml
 ```bash
-aws ec2 allocate-address --domain vpc
+# For Jump server
+aws ec2 allocate-address --domain vpc \
+  | jq '.AllocationId' \
+  | xargs aws ec2 create-tags --tags Key=Name,Value=PNEIPJump Key=Component,Value=PrivateNet --resources
+  
+# For NAT
+aws ec2 allocate-address --domain vpc \
+  | jq '.AllocationId' \
+  | xargs aws ec2 create-tags --tags Key=Name,Value=PNEIPNAT Key=Component,Value=PrivateNet --resources  
 ```
-You have to change `PNEIPAssociation`'s `AllocationId` in `template.yml` to new AllocationId you got above.
+You have to change `AllocationId` in EIP section of `template.yml` to new AllocationIds you got above.
 
 ## Deploy
 ```bash;
