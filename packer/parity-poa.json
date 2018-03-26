@@ -22,7 +22,7 @@
       },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "private-net {{timestamp}}"
+      "ami_name": "private-chain {{timestamp}}"
     }
   ],
   "provisioners": [

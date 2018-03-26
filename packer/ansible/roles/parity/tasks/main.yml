@@ -15,7 +15,7 @@
 - name: Create working directory
   file: path={{ parity_dir }} state=directory owner=root group=root mode=0755
 
-- name: Deliver configuration files for Parity private net
+- name: Deliver configuration files for Parity private chain
   template: src={{ item.src }} dest={{ parity_dir }}/{{ item.dest }} backup=yes
   with_items:
     - { src: 'spec.json.j2', dest: 'spec.json' }
