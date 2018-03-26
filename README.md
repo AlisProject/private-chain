@@ -1,4 +1,4 @@
-# private-net
+# private-chain
 
 # Prerequisite
 - pyenv
@@ -31,20 +31,20 @@ packer validate ./parity-poa.json
 
 ## Create EC2 KeyPair
 ```bash
-aws ec2 create-key-pair --key-name private-net
+aws ec2 create-key-pair --key-name private-chain
 ```
 
 ## Create EIP and edit template.yml
 ```bash
-# For Jump server
+# For Bastion server
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=PNEIPJump Key=Component,Value=PrivateNet --resources
+  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPBastion Key=Component,Value=PrivateChain --resources
   
 # For NAT
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=PNEIPNAT Key=Component,Value=PrivateNet --resources  
+  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT Key=Component,Value=PrivateChain --resources  
 ```
 You have to change `AllocationId` in EIP section of `template.yml` to new AllocationIds you got above.
 
@@ -63,8 +63,8 @@ aws cloudformation deploy \
 aws ec2 allocate-address --domain vpc
 ```
 
-### Associate EIP to Jump server that made by CloudFormation  
+### Associate EIP to Bastion server that made by CloudFormation  
 
 ```bash
-aws ec2 associate-address --allocation-id {eip-allocation-id} --instance {jump-server-instance-id}
+aws ec2 associate-address --allocation-id {eip-allocation-id} --instance {bastion-server-instance-id}
 ```

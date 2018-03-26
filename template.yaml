@@ -402,54 +402,54 @@ Metadata:
       iscontainedinside:
         - c1c92124-f585-41a6-954c-581e8bb5d568
 Resources:
-  PrivateNet:
+  PrivateChain:
     Type: 'AWS::EC2::VPC'
     Properties:
-      CidrBlock: 10.0.0.0/24
+      CidrBlock: 10.1.0.0/24
       Tags:
         - Key: Name
-          Value: PrivateNet
+          Value: PrivateChain
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 83453b04-7644-4097-9f67-f65cd55e29a4
-  PNPrivateSubNet1:
+  PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref PrivateNet
-      CidrBlock: 10.0.0.0/28
+      VpcId: !Ref PrivateChain
+      CidrBlock: 10.1.0.0/28
       AvailabilityZone: ap-northeast-1a
       Tags:
         - Key: Name
-          Value: PNPrivateSubNet1
+          Value: PrivateSubNet1
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 505abc1b-744b-4f1c-ac1d-4593ee0c8f7d
-  PNPrivateSubNet2:
+  PrivateSubNet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref PrivateNet
-      CidrBlock: 10.0.0.16/28
+      VpcId: !Ref PrivateChain
+      CidrBlock: 10.1.0.16/28
       AvailabilityZone: ap-northeast-1c
       Tags:
         - Key: Name
-          Value: PNPrivateSubNet2
+          Value: PrivateSubNet2
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 7956d3bf-0411-47c3-a791-53af78c3db0e
-  PNELB:
+  ELB:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
-      LoadBalancerName: PNELB
+      LoadBalancerName: ELB
       Scheme: internal
       Subnets:
-        - !Ref PNPrivateSubNet1
-        - !Ref PNPrivateSubNet2
+        - !Ref PrivateSubNet1
+        - !Ref PrivateSubNet2
       Listeners:
         - LoadBalancerPort: '80'
           InstancePort: '80'
@@ -457,13 +457,13 @@ Resources:
           InstanceProtocol: HTTP
       Tags:
         - Key: Name
-          Value: PNELB
+          Value: ELB
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: df4a2a8d-57ec-470f-9d4b-2fe143094311
-  PNRoleToELB:
+  RoleToELB:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
@@ -476,7 +476,7 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Policies:
-        - PolicyName: PNELBFullAccess
+        - PolicyName: ELBFullAccess
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -493,27 +493,27 @@ Resources:
       Code:
         ZipFile: ./tmp.zip
       Handler: handler.lambda_handler
-      Role: !GetAtt PNRoleToELB.Arn
+      Role: !GetAtt RoleToELB.Arn
       VpcConfig:
         SecurityGroupIds:
-          - !Ref PNPrivateSecurityGroup
+          - !Ref PrivateSecurityGroup
         SubnetIds:
-          - !Ref PNPrivateSubNet1
-          - !Ref PNPrivateSubNet2
+          - !Ref PrivateSubNet1
+          - !Ref PrivateSubNet2
       Tags:
         - Key: Name
           Value: GetBalance
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 6ffe7d8f-706d-477c-abb6-5804e99061fe
-  PNPrivateSecurityGroup:
+  PrivateSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      VpcId: !Ref PrivateNet
-      GroupName: PNPrivateSecurityGroup
-      GroupDescription: Security Group for Private net.
+      VpcId: !Ref PrivateChain
+      GroupName: PrivateSecurityGroup
+      GroupDescription: Security Group for Private chain.
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '22'
@@ -521,135 +521,135 @@ Resources:
           CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
-          Value: PNPrivateSecurityGroup
+          Value: PrivateSecurityGroup
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: f17fb5a9-9ee5-493e-bfd7-0ecd88a9d6fc
-  PNParityPoA1a:
+  ParityPoA1a:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
-      SubnetId: !Ref PNPrivateSubNet1
-      KeyName: private-net
+      SubnetId: !Ref PrivateSubNet1
+      KeyName: private-chain
       SecurityGroupIds:
-        - !Ref PNPrivateSecurityGroup
+        - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: PNParityPoA1a
+          Value: ParityPoA1a
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 00b8a74f-7587-43c3-a659-60ef9014da8a
-  PNParityPoA2a:
+  ParityPoA2a:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
-      SubnetId: !Ref PNPrivateSubNet1
-      KeyName: private-net
+      SubnetId: !Ref PrivateSubNet1
+      KeyName: private-chain
       SecurityGroupIds:
-        - !Ref PNPrivateSecurityGroup
+        - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: PNParityPoA2a
+          Value: ParityPoA2a
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 233f632d-b924-4fdf-b4a4-0e5876a405d3
-  PNParityPoA1c:
+  ParityPoA1c:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
-      SubnetId: !Ref PNPrivateSubNet2
-      KeyName: private-net
+      SubnetId: !Ref PrivateSubNet2
+      KeyName: private-chain
       SecurityGroupIds:
-        - !Ref PNPrivateSecurityGroup
+        - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: PNParityPoA1c
+          Value: ParityPoA1c
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 2a658f03-e462-422f-b8d8-6abc59b74be2
-  PNParityPoA2c:
+  ParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
-      SubnetId: !Ref PNPrivateSubNet2
-      KeyName: private-net
+      SubnetId: !Ref PrivateSubNet2
+      KeyName: private-chain
       SecurityGroupIds:
-        - !Ref PNPrivateSecurityGroup
+        - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: PNParityPoA2c
+          Value: ParityPoA2c
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 5265c801-0cd5-458e-8219-b108dd48d189
-  PNPublicSubnet:
+  PublicSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref PrivateNet
+      VpcId: !Ref PrivateChain
       AvailabilityZone: ap-northeast-1c
-      CidrBlock: 10.0.0.32/28
+      CidrBlock: 10.1.0.32/28
       Tags:
         - Key: Name
-          Value: PNPublicSubnet
+          Value: PublicSubnet
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: c1c92124-f585-41a6-954c-581e8bb5d568
-  PNInternetGateway:
+  InternetGateway:
     Type: 'AWS::EC2::InternetGateway'
     Properties:
       Tags:
         - Key: Name
-          Value: PNInternetGateway
+          Value: InternetGateway
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: cf3cab38-1e40-4f58-8ce0-1dc1897e49d7
-  PNVPCGatewayAttachment:
+  VPCGatewayAttachment:
     Type: 'AWS::EC2::VPCGatewayAttachment'
     Properties:
-      InternetGatewayId: !Ref PNInternetGateway
-      VpcId: !Ref PrivateNet
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: cf3cab38-1e40-4f58-8ce0-1dc1897e49d7
-  PNJump:
+  Bastion:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
-      SubnetId: !Ref PNPublicSubnet
-      KeyName: private-net
+      SubnetId: !Ref PublicSubnet
+      KeyName: private-chain
       SecurityGroupIds:
-        - !Ref PNPublicSecurityGroup
+        - !Ref PublicSecurityGroup
       Tags:
         - Key: Name
-          Value: PNJump
+          Value: Bastion
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: ebd3af38-b1c7-4fd9-910c-c7dc01a0c33a
-  PNEIPAssociation:
+  EIPAssociation:
     Type: 'AWS::EC2::EIPAssociation'
     Properties:
       AllocationId: eipalloc-4e2c3274
-      InstanceId: !Ref PNJump
-  PNPublicSecurityGroup:
+      InstanceId: !Ref Bastion
+  PublicSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      VpcId: !Ref PrivateNet
-      GroupName: PNPublicSecurityGroup
+      VpcId: !Ref PrivateChain
+      GroupName: PublicSecurityGroup
       GroupDescription: Security Group for public subnet. Enable SSH access via port 22
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -658,88 +658,88 @@ Resources:
           CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
-          Value: PNPublicSecurityGroup
+          Value: PublicSecurityGroup
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 605d8cb5-3c5d-494f-b917-941fb7c787ad
-  PNPublicRouteTable:
+  PublicRouteTable:
     Type: 'AWS::EC2::RouteTable'
     Properties:
-      VpcId: !Ref PrivateNet
+      VpcId: !Ref PrivateChain
       Tags:
         - Key: Name
-          Value: PNPublicRouteTable
+          Value: PublicRouteTable
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: dc6544b8-7f9e-4682-a124-42d4ae0169e2
-  PNPublicRoute:
+  PublicRoute:
     Type: 'AWS::EC2::Route'
     Properties:
-      RouteTableId: !Ref PNPublicRouteTable
+      RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref PNInternetGateway
+      GatewayId: !Ref InternetGateway
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 36f78031-a125-460e-ad8f-f4cbee43e772
-  PNPublicSubnetRouteTableAssociation:
+  PublicSubnetRouteTableAssociation:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
-      SubnetId: !Ref PNPublicSubnet
-      RouteTableId: !Ref PNPublicRouteTable
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 789eb931-c612-4eeb-b34f-7d2dd0abf30c
-  PNNatGateway:
+  NatGateway:
     Type: 'AWS::EC2::NatGateway'
     Properties:
       AllocationId: eipalloc-0e273934
-      SubnetId: !Ref PNPublicSubnet
+      SubnetId: !Ref PublicSubnet
       Tags:
         - Key: Name
-          Value: PNNatGateway
+          Value: NatGateway
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 5547d8e7-fe85-45cf-848a-7a61f8275227
-  PNPrivateRouteTable:
+  PrivateRouteTable:
     Type: 'AWS::EC2::RouteTable'
     Properties:
-      VpcId: !Ref PrivateNet
+      VpcId: !Ref PrivateChain
       Tags:
         - Key: Name
-          Value: PNPrivateRouteTable
+          Value: PrivateRouteTable
         - Key: Component
-          Value: PrivateNet
+          Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: dc6544b8-7f9e-4682-a124-42d4ae0169e2
-  PNPrivateRoute:
+  PrivateRoute:
     Type: 'AWS::EC2::Route'
     Properties:
-      RouteTableId: !Ref PNPrivateRouteTable
+      RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref PNNatGateway
+      NatGatewayId: !Ref NatGateway
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 36f78031-a125-460e-ad8f-f4cbee43e772
-  PNPrivateSubnetRouteTableAssociation1:
+  PrivateSubnetRouteTableAssociation1:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
-      SubnetId: !Ref PNPrivateSubNet1
-      RouteTableId: !Ref PNPrivateRouteTable
+      SubnetId: !Ref PrivateSubNet1
+      RouteTableId: !Ref PrivateRouteTable
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 789eb931-c612-4eeb-b34f-7d2dd0abf30c
-  PNPrivateSubnetRouteTableAssociation2:
+  PrivateSubnetRouteTableAssociation2:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
-      SubnetId: !Ref PNPrivateSubNet2
-      RouteTableId: !Ref PNPrivateRouteTable
+      SubnetId: !Ref PrivateSubNet2
+      RouteTableId: !Ref PrivateRouteTable
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 789eb931-c612-4eeb-b34f-7d2dd0abf30c
