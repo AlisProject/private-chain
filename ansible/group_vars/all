@@ -1,0 +1,4 @@
+---
+
+parity_dir: /var/parity
+ethbase_password: YOURPASSWORDHERE

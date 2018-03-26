@@ -2,13 +2,14 @@
 - name: Init
   file: src=/usr/bin/python3 dest=/usr/bin/python owner=root group=root state=link
 
-- name: Install jq
+- name: Install packages
   apt:
     name: "{{ item }}"
     state: present
     update_cache: yes
   with_items:
     - jq
+    - supervisor
 
 - name: Get Parity install script
   command: curl https://get.parity.io -kL -o /tmp/parity.sh
@@ -28,6 +29,7 @@
     - "{{ parity_dir }}"
     - "{{ parity_dir }}/keys"
     - "{{ parity_dir }}/keys/PrivateChain"
+    - "/var/log/supervisor/jobs"
 
 - name: Deliver configuration files for Parity private chain
   template: src={{ item.src }} dest={{ parity_dir }}/{{ item.dest }} backup=yes
@@ -36,6 +38,11 @@
     - { src: 'node.toml.j2', dest: 'node.toml' }
     - { src: 'node.pwds.j2', dest: 'node.pwds' }
 
+- name: Deliver supervisor configuration file for Parity
+  template: src={{ item.src }} dest=/etc/supervisor/conf.d/{{ item.dest }} backup=yes
+  with_items:
+    - { src: 'parity.conf.j2', dest: 'parity.conf' }
+
 - name: Deliver ETH account key files
   template: src={{ item.src }} dest={{ parity_dir }}//keys/PrivateChain/{{ item.dest }} backup=yes mode=600
   with_items:
@@ -43,17 +50,3 @@
     - { src: 'PCParityPoA2a_key.j2', dest: 'PCParityPoA2a' }
     - { src: 'PCParityPoA2c_key.j2', dest: 'PCParityPoA2c' }
     - { src: 'PCParityPoA1c_key.j2', dest: 'PCParityPoA1c' }
-
-- name: Import parity account
-  command: "parity account import {{ parity_dir }}/keys/PrivateChain/{{ ansible_host }}"
-
-- command: "parity account list"
-  register: validator_address
-
-- name: Add validator
-  lineinfile: >-
-    dest='{{ parity_dir }}/node.toml'
-    state=present
-    backrefs=yes
-    regexp='^engine_signer.*'
-    line='engine_signer = "{{ validator_address.stdout }}"'
