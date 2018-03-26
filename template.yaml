@@ -530,7 +530,7 @@ Resources:
   PCParityPoA1a:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bec974d8
+      ImageId: ami-83f0feff
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -546,7 +546,7 @@ Resources:
   PCParityPoA2a:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bec974d8
+      ImageId: ami-83f0feff
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -562,7 +562,7 @@ Resources:
   PCParityPoA1c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bec974d8
+      ImageId: ami-83f0feff
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
@@ -578,7 +578,7 @@ Resources:
   PCParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bec974d8
+      ImageId: ami-83f0feff
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
