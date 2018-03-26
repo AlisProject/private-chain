@@ -2,6 +2,14 @@
 - name: Init
   file: src=/usr/bin/python3 dest=/usr/bin/python owner=root group=root state=link
 
+- name: Install jq
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - jq
+
 - name: Get Parity install script
   command: curl https://get.parity.io -kL -o /tmp/parity.sh
 
