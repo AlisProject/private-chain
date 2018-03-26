@@ -15,6 +15,13 @@ export AWS_SECRET_ACCESS_KEY=YOURAWSSECRETKEY
 # Packer
 Build an AMI that the nodes of Parity PoA.  
 
+## Parity resources
+You have to change ETH account keys when you use this in production.
+- `./packer/ansible/roles/parity/templates/PCParityPoA*_key.j2`
+
+Also `spec.json`.
+- `./packer/ansible/roles/parity/templates/spec.json.j2`
+
 ## Build
 ```bash
 cd ./packer/

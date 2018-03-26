@@ -22,8 +22,12 @@
   shell: /tmp/parity.sh
   when: not parity.stat.exists
 
-- name: Create working directory
-  file: path={{ parity_dir }} state=directory owner=root group=root mode=0755
+- name: Create dirctries
+  file: path={{ item }} state=directory owner=root group=root mode=0755
+  with_items:
+    - "{{ parity_dir }}"
+    - "{{ parity_dir }}/keys"
+    - "{{ parity_dir }}/keys/PrivateChain"
 
 - name: Deliver configuration files for Parity private chain
   template: src={{ item.src }} dest={{ parity_dir }}/{{ item.dest }} backup=yes
@@ -32,3 +36,24 @@
     - { src: 'node.toml.j2', dest: 'node.toml' }
     - { src: 'node.pwds.j2', dest: 'node.pwds' }
 
+- name: Deliver ETH account key files
+  template: src={{ item.src }} dest={{ parity_dir }}//keys/PrivateChain/{{ item.dest }} backup=yes mode=600
+  with_items:
+    - { src: 'PCParityPoA1a_key.j2', dest: 'PCParityPoA1a' }
+    - { src: 'PCParityPoA2a_key.j2', dest: 'PCParityPoA2a' }
+    - { src: 'PCParityPoA2c_key.j2', dest: 'PCParityPoA2c' }
+    - { src: 'PCParityPoA1c_key.j2', dest: 'PCParityPoA1c' }
+
+- name: Import parity account
+  command: "parity account import {{ parity_dir }}/keys/PrivateChain/{{ ansible_host }}"
+
+- command: "parity account list"
+  register: validator_address
+
+- name: Add validator
+  lineinfile: >-
+    dest='{{ parity_dir }}/node.toml'
+    state=present
+    backrefs=yes
+    regexp='^engine_signer.*'
+    line='engine_signer = "{{ validator_address.stdout }}"'
