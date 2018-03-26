@@ -1,0 +1,17 @@
+# ~/.tmuxinator/private_chain.yml
+
+name: private_chain
+root: /tmp/
+
+windows:
+  - window1:
+     layout: tiled
+     panes:
+       - PCParityPoA1a:
+         - ssh PCParityPoA1a
+       - PCParityPoA2a:
+         - ssh PCParityPoA2a
+       - PCParityPoA1c:
+         - ssh PCParityPoA1c
+       - PCParityPoA2c:
+         - ssh PCParityPoA2c

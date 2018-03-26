@@ -1,0 +1,16 @@
+path '/Users/YOU_USER_NAME_HERE/.ssh/config'
+aws_keys(
+  default: {
+    access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+    secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
+  },
+)
+regions ENV['AWS_REGION'] || ENV['AMAZON_REGION'] || ENV['AWS_DEFAULT_REGION'] || 'us-east-1'
+
+host_line <<END
+Host <%= tags['Name'] %>
+  HostName <%= dns_name || public_ip_address ||  private_ip_address %>
+  User ubuntu
+  IdentityFile ~/.ssh/private-chain
+END
+

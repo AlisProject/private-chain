@@ -527,7 +527,7 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: f17fb5a9-9ee5-493e-bfd7-0ecd88a9d6fc
-  ParityPoA1a:
+  PCParityPoA1a:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
@@ -537,13 +537,13 @@ Resources:
         - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: ParityPoA1a
+          Value: PCParityPoA1a
         - Key: Component
           Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 00b8a74f-7587-43c3-a659-60ef9014da8a
-  ParityPoA2a:
+  PCParityPoA2a:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
@@ -553,13 +553,13 @@ Resources:
         - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: ParityPoA2a
+          Value: PCParityPoA2a
         - Key: Component
           Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 233f632d-b924-4fdf-b4a4-0e5876a405d3
-  ParityPoA1c:
+  PCParityPoA1c:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
@@ -569,13 +569,13 @@ Resources:
         - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: ParityPoA1c
+          Value: PCParityPoA1c
         - Key: Component
           Value: PrivateChain
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 2a658f03-e462-422f-b8d8-6abc59b74be2
-  ParityPoA2c:
+  PCParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
@@ -585,7 +585,7 @@ Resources:
         - !Ref PrivateSecurityGroup
       Tags:
         - Key: Name
-          Value: ParityPoA2c
+          Value: PCParityPoA2c
         - Key: Component
           Value: PrivateChain
     Metadata:
