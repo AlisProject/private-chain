@@ -524,6 +524,11 @@ Resources:
           ToPort: '30300'
           CidrIp: 10.1.0.0/24
           Description: 'For enodes.'
+        - IpProtocol: tcp
+          FromPort: '8545'
+          ToPort: '8545'
+          CidrIp: 10.1.0.0/24
+          Description: 'For RPC.'
       Tags:
         - Key: Name
           Value: PrivateSecurityGroup
