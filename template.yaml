@@ -519,6 +519,11 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '30300'
+          ToPort: '30300'
+          CidrIp: 10.1.0.0/24
+          Description: 'For enodes.'
       Tags:
         - Key: Name
           Value: PrivateSecurityGroup
