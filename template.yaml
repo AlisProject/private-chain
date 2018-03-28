@@ -1,4 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  ParityNodesAMI:
+    Type: 'String'
+
 Resources:
   PrivateChain:
     Type: 'AWS::EC2::VPC'
@@ -146,7 +150,7 @@ Resources:
   PCParityPoA1a:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bd767ec1
+      ImageId: !Ref ParityNodesAMI
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -159,7 +163,7 @@ Resources:
   PCParityPoA2a:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bd767ec1
+      ImageId: !Ref ParityNodesAMI
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -172,7 +176,7 @@ Resources:
   PCParityPoA1c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bd767ec1
+      ImageId: !Ref ParityNodesAMI
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
@@ -185,7 +189,7 @@ Resources:
   PCParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-bd767ec1
+      ImageId: !Ref ParityNodesAMI
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:

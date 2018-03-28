@@ -56,11 +56,14 @@ aws ec2 allocate-address --domain vpc \
 You have to change `AllocationId` in EIP section of `template.yml` to new AllocationIds you got above.
 
 ## Deploy
+You should specify your AMI ID that you made above to `<YOUR-AMI-IMAGE-ID-HERE>`.
+
 ```bash;
 aws cloudformation deploy \
-  --template-file packaged-template.yaml \
-  --stack-name YOURSTACKNAMEHERE \
-  --capabilities CAPABILITY_IAM
+  --template-file template.yaml \
+  --capabilities CAPABILITY_IAM \
+  --parameter-overrides ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
+  --stack-name i4i2
 ```
 
 ## EIP
