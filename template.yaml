@@ -31,6 +31,17 @@ Resources:
           Value: PrivateSubNet2
         - Key: Component
           Value: PrivateChain
+  ELBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PrivateChain
+      GroupName: ELBSecurityGroup
+      GroupDescription: Security Group for ELB.
+      Tags:
+        - Key: Name
+          Value: ELBSecurityGroup
+        - Key: Component
+          Value: PrivateChain
   ELB:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
@@ -40,10 +51,23 @@ Resources:
         - !Ref PrivateSubNet1
         - !Ref PrivateSubNet2
       Listeners:
-        - LoadBalancerPort: '80'
-          InstancePort: '80'
+        - LoadBalancerPort: '8545'
+          InstancePort: '8545'
           Protocol: HTTP
           InstanceProtocol: HTTP
+      Instances:
+        - !Ref PCParityPoA1a
+        - !Ref PCParityPoA2a
+        - !Ref PCParityPoA1c
+        - !Ref PCParityPoA2c
+      SecurityGroups:
+        - !Ref ELBSecurityGroup
+#      HealthCheck:
+#        Target: TCP:8545/
+#        HealthyThreshold: '3'
+#        UnhealthyThreshold: '5'
+#        Interval: '30'
+#        Timeout: '5'
       Tags:
         - Key: Name
           Value: ELB
@@ -107,6 +131,11 @@ Resources:
         - IpProtocol: tcp
           FromPort: '8545'
           ToPort: '8545'
+          SourceSecurityGroupId: !Ref ELBSecurityGroup
+          Description: 'For RPC.'
+        - IpProtocol: tcp
+          FromPort: '8545'
+          ToPort: '8545'
           CidrIp: 10.1.0.0/24
           Description: 'For RPC.'
       Tags:
@@ -117,7 +146,7 @@ Resources:
   PCParityPoA1a:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-83f0feff
+      ImageId: ami-bd767ec1
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -130,7 +159,7 @@ Resources:
   PCParityPoA2a:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-83f0feff
+      ImageId: ami-bd767ec1
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -143,7 +172,7 @@ Resources:
   PCParityPoA1c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-83f0feff
+      ImageId: ami-bd767ec1
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
@@ -156,7 +185,7 @@ Resources:
   PCParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
-      ImageId: ami-83f0feff
+      ImageId: ami-bd767ec1
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
