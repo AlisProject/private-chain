@@ -66,12 +66,6 @@ Resources:
         - !Ref PCParityPoA2c
       SecurityGroups:
         - !Ref ELBSecurityGroup
-#      HealthCheck:
-#        Target: TCP:8545/
-#        HealthyThreshold: '3'
-#        UnhealthyThreshold: '5'
-#        Interval: '30'
-#        Timeout: '5'
       Tags:
         - Key: Name
           Value: ELB
@@ -136,6 +130,11 @@ Resources:
           FromPort: '8545'
           ToPort: '8545'
           SourceSecurityGroupId: !Ref ELBSecurityGroup
+          Description: 'For RPC.'
+        - IpProtocol: tcp
+          FromPort: '8545'
+          ToPort: '8545'
+          SourceSecurityGroupId: !Ref PublicSecurityGroup
           Description: 'For RPC.'
         - IpProtocol: tcp
           FromPort: '8545'
