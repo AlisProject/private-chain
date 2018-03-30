@@ -1,9 +1,4 @@
 ---
-#- name: Create accounts
-#  command: parity account new --config node.toml
-#  args:
-#    chdir: "{{ parity_dir }}"
-
 - name: Import parity account
   command: "parity account import {{ parity_dir }}/keys/PrivateChain/{{ ansible_host }}"
 
@@ -20,5 +15,3 @@
 
 - name: Reload supervisor to start parity
   service: name=supervisor state=reloaded
-  tags:
-    - tmp

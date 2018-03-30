@@ -1,8 +1,17 @@
 ---
 
-- hosts: all
+- name: Parity configurations and start nodes.
+  hosts: parity-poa
   remote_user: ubuntu
   become: yes
 
   roles:
     - private-chain
+
+- name: Bastion server configrations.
+  hosts: bastion
+  remote_user: ubuntu
+  become: yes
+
+  roles:
+    - bastion

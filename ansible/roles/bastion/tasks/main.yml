@@ -1,0 +1,35 @@
+---
+- name: Create dirctries
+  file: path={{ item }} state=directory owner=root group=root mode=0755
+  with_items:
+    - "{{ contracts_url }}"
+
+- name: Clone resources
+  git:
+    repo: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: 'https://github.com/AlisProject/private-chain-contracts.git', dest: "{{ contracts_url }}" }
+    - { src: 'https://github.com/riywo/ndenv', dest: "~/.ndenv" }
+    - { src: 'https://github.com/riywo/node-build.git', dest: "~/.ndenv/plugins/node-build" }
+
+- name: Add lines to .bashrc
+  lineinfile:
+    path: ~/.bashrc
+    line: "{{ item }}"
+    insertbefore: EOF
+  with_items:
+    - 'export PATH="$HOME/.ndenv/bin:$PATH"'
+    - 'eval "$(ndenv init -)"'
+
+- name: Install and prepare modules
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ contracts_url }}"
+  with_items:
+    - "~/.ndenv/bin/ndenv install"
+    - "/root/.ndenv/shims/npm install -g yarn"
+    - "~/.ndenv/bin/ndenv exec yarn"
+    - "~/.ndenv/bin/ndenv exec yarn exec truffle -- install"
+  tags:
+    - tmp
