@@ -15,3 +15,22 @@
 
 - name: Reload supervisor to start parity
   service: name=supervisor state=reloaded
+
+- pause:
+    minutes: 1
+
+- name: Install and prepare modules
+  shell: "ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | xargs echo"
+  register: private_ips
+
+- shell: "curl --data '{\"jsonrpc\":\"2.0\",\"method\":\"parity_enode\",\"params\":[],\"id\":0}' -H \"Content-Type: application/json\" -X POST {{ item }}:8545 | jq '.result'"
+  register: enodes
+  with_items: '{{ private_ips.stdout }}'
+
+- file: path={{ parity_dir }}/enode.sh state=touch owner=root group=root mode=0755
+
+- lineinfile:
+    dest: '{{ parity_dir }}/enode.sh'
+    line: "curl --data '{\"jsonrpc\":\"2.0\",\"method\":\"parity_addReservedPeer\",\"params\":[{{ item }}],\"id\":0}' -H \"Content-Type: application/json\" -X POST localhost:8545"
+  with_items:
+    - '{{ enodes.results[0].stdout }}'
