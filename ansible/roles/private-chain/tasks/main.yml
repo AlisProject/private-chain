@@ -19,8 +19,13 @@
 - pause:
     minutes: 1
 
-- name: Install and prepare modules
-  shell: "ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | xargs echo"
+- name: Import Parity accounts
+  shell: "parity account import {{ parity_dir }}/keys/PrivateChain/PCParityPoA*"
+  args:
+    chdir: '{{ parity_dir }}'
+
+- name: enode tasks
+  shell: "ip addr show ens3 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | xargs echo"
   register: private_ips
 
 - shell: "curl --data '{\"jsonrpc\":\"2.0\",\"method\":\"parity_enode\",\"params\":[],\"id\":0}' -H \"Content-Type: application/json\" -X POST {{ item }}:8545 | jq '.result'"

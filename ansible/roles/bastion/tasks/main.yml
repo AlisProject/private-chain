@@ -31,5 +31,3 @@
     - "/root/.ndenv/shims/npm install -g yarn"
     - "~/.ndenv/bin/ndenv exec yarn"
     - "~/.ndenv/bin/ndenv exec yarn exec truffle -- install"
-  tags:
-    - tmp

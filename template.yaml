@@ -150,6 +150,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
+      InstanceType: m4.large
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -163,6 +164,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
+      InstanceType: m4.large
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -176,6 +178,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
+      InstanceType: m4.large
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
@@ -189,6 +192,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
+      InstanceType: m4.large
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
@@ -226,6 +230,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: ami-bec974d8
+      InstanceType: t2.medium
       SubnetId: !Ref PublicSubnet
       KeyName: private-chain
       SecurityGroupIds:
