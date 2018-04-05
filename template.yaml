@@ -1,4 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
+#Transform: AWS::Serverless-2016-10-31
+
 Parameters:
   ParityNodesAMI:
     Type: 'String'
@@ -13,6 +15,53 @@ Resources:
           Value: PrivateChain
         - Key: Component
           Value: PrivateChain
+  PrivateChainVpcLink:
+    Type: "AWS::ApiGateway::VpcLink"
+    Properties:
+      Description: VPC link for Private chain.
+      Name: PrivateChainVpcLink
+      TargetArns:
+        - !Ref NLB
+  NLB:
+    Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    Properties:
+      Name: NLB
+      Scheme: internal
+      Subnets:
+        - !Ref PublicSubnet
+      Type: network
+      Tags:
+        - Key: Name
+          Value: NLB
+        - Key: Component
+          Value: PrivateChain
+#  API:
+#    Type: 'AWS::Serverless::Api'
+#    Properties:
+#      StageName: production
+#      DefinitionBody:
+#        swagger: "2.0"
+#        info:
+#          title: !Ref "AWS::StackName"
+#          version: 1.0.0
+#        basePath: /
+#        schemes:
+#          - https
+#        definitions:
+#          CreateAccount:
+#            type: object
+#        paths:
+#          /accounts/new:
+#            post:
+#              description: '新規アカウント作成'
+#              responses:
+#                '200':
+#                  description: '新規作成されたアカウントのアドレス'
+#                  schema:
+#                    type: object
+#                    properties:
+#                      address:
+#                        type: 'string'
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
