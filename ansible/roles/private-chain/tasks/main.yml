@@ -1,28 +1,21 @@
 ---
-- name: Import parity account
-  command: "parity account import {{ parity_dir }}/keys/PrivateChain/{{ ansible_host }}"
-
-- command: "parity account list"
+- name: Get validator address
+  shell: "cat {{ parity_dir }}/keys/PrivateChain/{{ inventory_hostname }} | jq '.address' | sed 's/\"//g'"
   register: validator_address
 
-- name: Add validator to node.toml
+- name: Add validator to config.toml
   lineinfile: >-
-    dest='{{ parity_dir }}/node.toml'
+    dest='{{ parity_dir }}/config.toml'
     state=present
     backrefs=yes
     regexp='^engine_signer.*'
-    line='engine_signer = "{{ validator_address.stdout }}"'
+    line='engine_signer = "0x{{ validator_address.stdout }}"'
 
 - name: Reload supervisor to start parity
   service: name=supervisor state=reloaded
 
 - pause:
     minutes: 1
-
-- name: Import Parity accounts
-  shell: "parity account import {{ parity_dir }}/keys/PrivateChain/PCParityPoA*"
-  args:
-    chdir: '{{ parity_dir }}'
 
 - name: enode tasks
   shell: "ip addr show ens3 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | xargs echo"

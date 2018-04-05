@@ -32,7 +32,7 @@
   template: src={{ item.src }} dest={{ parity_dir }}/{{ item.dest }} backup=yes
   with_items:
     - { src: 'spec.json.j2', dest: 'spec.json' }
-    - { src: 'node.toml.j2', dest: 'node.toml' }
+    - { src: 'config.toml.j2', dest: 'config.toml' }
     - { src: 'node.pwds.j2', dest: 'node.pwds' }
 
 - name: Deliver supervisor configuration file for Parity
