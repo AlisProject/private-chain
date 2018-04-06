@@ -66,41 +66,45 @@ Resources:
       LoadBalancerArn: !Ref NLB
       Port: 8545
       Protocol: TCP
-#  API:
-#    Type: 'AWS::Serverless::Api'
-#    Properties:
-#      StageName: production
-#      DefinitionBody:
-#        swagger: "2.0"
-#        info:
-#          title: !Ref "AWS::StackName"
-#          version: 1.0.0
-#        basePath: /
-#        schemes:
-#          - https
-#        definitions:
-#          CreateAccount:
-#            type: object
-#        paths:
-#          /accounts/new:
-#            post:
-#              description: '新規アカウント作成'
-#              responses:
-#                '200':
-#                  description: '新規作成されたアカウントのアドレス'
-#                  schema:
-#                    type: object
-#                    properties:
-#                      address:
-#                        type: 'string'
-#              x-amazon-apigateway-integration:
-#                responses:
-#                  default:
-#                    statusCode: '200'
-#                uri: !Ref NLB
-#                passthroughBehavior: when_no_templates
-#                httpMethod: POST
-#                type: vpc_link
+  API:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: production
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: !Ref "AWS::StackName"
+          version: 1.0.0
+        basePath: /
+        schemes:
+          - https
+        definitions:
+          CreateAccount:
+            type: object
+        paths:
+          /accounts/new:
+            post:
+              description: '新規アカウント作成'
+              responses:
+                '200':
+                  description: '新規作成されたアカウントのアドレス'
+                  schema:
+                    type: object
+                    properties:
+                      address:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json: "{\"jsonrpc\":\"2.0\",\"method\":\"personal_newAccount\",\"params\":[\"password\"],\"id\":1}"
+
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
