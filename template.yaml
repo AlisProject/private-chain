@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-#Transform: AWS::Serverless-2016-10-31
+Transform: AWS::Serverless-2016-10-31
 
 Parameters:
   ParityNodesAMI:
@@ -35,6 +35,37 @@ Resources:
           Value: NLB
         - Key: Component
           Value: PrivateChain
+  NlbTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: NlbTargetGroup
+      Port: 8545
+      Protocol: TCP
+      Tags:
+        - Key: NlbTargetGroup
+          Value: NLB
+        - Key: Component
+          Value: PrivateChain
+      Targets:
+        - Id: !Ref PCParityPoA1a
+          Port: 8545
+        - Id: !Ref PCParityPoA1c
+          Port: 8545
+        - Id: !Ref PCParityPoA2a
+          Port: 8545
+        - Id: !Ref PCParityPoA2c
+          Port: 8545
+      TargetType: instance
+      VpcId: !Ref PrivateChain
+  NlbListener:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref NlbTargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref NLB
+      Port: 8545
+      Protocol: TCP
 #  API:
 #    Type: 'AWS::Serverless::Api'
 #    Properties:
@@ -62,6 +93,14 @@ Resources:
 #                    properties:
 #                      address:
 #                        type: 'string'
+#              x-amazon-apigateway-integration:
+#                responses:
+#                  default:
+#                    statusCode: '200'
+#                uri: !Ref NLB
+#                passthroughBehavior: when_no_templates
+#                httpMethod: POST
+#                type: vpc_link
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
