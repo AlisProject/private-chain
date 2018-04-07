@@ -1,0 +1,9 @@
+[program:Parity]
+command=/usr/bin/parity --config {{ parity_dir }}/config.toml
+user=root
+autorestart=true
+stdout_logfile=/var/log/supervisor/jobs/parity.log
+stdout_logfile_maxbytes=1MB
+stdout_logfile_backups=5
+stdout_capture_maxbytes=1MB
+redirect_stderr=true

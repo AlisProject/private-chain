@@ -15,15 +15,17 @@ export AWS_SECRET_ACCESS_KEY=YOURAWSSECRETKEY
 # Packer
 Build an AMI that the nodes of Parity PoA.  
 
+## Parity resources
+You have to change ETH account keys when you use this in production.
+- `./packer/ansible/roles/parity/templates/PCParityPoA*_key.j2`
+
+Also `spec.json`.
+- `./packer/ansible/roles/parity/templates/spec.json.j2`
+
 ## Build
 ```bash
 cd ./packer/
 packer build ./parity-poa.json
-```
-
-## Validation
-```bash
-packer validate ./parity-poa.json
 ```
 
 # CloudFormation
@@ -49,12 +51,32 @@ aws ec2 allocate-address --domain vpc \
 You have to change `AllocationId` in EIP section of `template.yml` to new AllocationIds you got above.
 
 ## Deploy
+You should specify your AMI ID that you made above to `<YOUR-AMI-IMAGE-ID-HERE>`.
+
 ```bash;
 aws cloudformation deploy \
-  --template-file packaged-template.yaml \
-  --stack-name YOURSTACKNAMEHERE \
-  --capabilities CAPABILITY_IAM
+  --template-file template.yaml \
+  --capabilities CAPABILITY_IAM \
+  --parameter-overrides ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
+  --stack-name i4i2
 ```
+
+## After deployment
+
+### Configure servers.
+```bash
+cd ansible
+ansible-playbook -i hosts site.yml
+```
+
+### Connect Parity nodes each other
+TODO:
+
+### Migrate private chain contracts from Bastion server
+TODO:
+
+### Fix API Gateway's `requestTemplates` and deploy again
+TODO:
 
 ## EIP
 

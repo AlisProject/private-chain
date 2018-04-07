@@ -1,24 +1,54 @@
 ---
-- name: Init
-  file: src=/usr/bin/python3 dest=/usr/bin/python owner=root group=root state=link
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - jq
+    - supervisor
 
 - name: Get Parity install script
-  get_url: url="https://get.parity.io" dest=/tmp/parity.sh mode=0755
+  command: curl https://get.parity.io -kL -o /tmp/parity.sh
+
+- file: path=/tmp/parity.sh mode=0755
 
 - stat: path=/usr/bin/parity
   register: parity
 
 - name: Install Parity
-  shell: /tmp/parity.sh -r stable
+  shell: /tmp/parity.sh
   when: not parity.stat.exists
 
-- name: Create working directory
-  file: path={{ parity_dir }} state=directory owner=root group=root mode=0755
+- name: Create dirctries
+  file: path={{ item }} state=directory owner=root group=root mode=0755
+  with_items:
+    - "{{ parity_dir }}"
+    - "{{ parity_dir }}/keys"
+    - "{{ parity_dir }}/keys/PrivateChain"
+    - "/var/log/supervisor/jobs"
 
 - name: Deliver configuration files for Parity private chain
   template: src={{ item.src }} dest={{ parity_dir }}/{{ item.dest }} backup=yes
   with_items:
     - { src: 'spec.json.j2', dest: 'spec.json' }
-    - { src: 'node.toml.j2', dest: 'node.toml' }
+    - { src: 'config.toml.j2', dest: 'config.toml' }
     - { src: 'node.pwds.j2', dest: 'node.pwds' }
 
+- name: Deliver supervisor configuration file for Parity
+  template: src={{ item.src }} dest=/etc/supervisor/conf.d/{{ item.dest }} backup=yes
+  with_items:
+    - { src: 'parity.conf.j2', dest: 'parity.conf' }
+
+- name: Deliver ETH account key files
+  template: src={{ item.src }} dest={{ parity_dir }}//keys/PrivateChain/{{ item.dest }} backup=yes mode=600
+  with_items:
+    - { src: 'PCParityPoA1a_key.j2', dest: 'PCParityPoA1a' }
+    - { src: 'PCParityPoA2a_key.j2', dest: 'PCParityPoA2a' }
+    - { src: 'PCParityPoA2c_key.j2', dest: 'PCParityPoA2c' }
+    - { src: 'PCParityPoA1c_key.j2', dest: 'PCParityPoA1c' }
+
+- name: Add motd
+  template: src={{ item.src }} dest={{ item.dest }} backup=yes
+  with_items:
+    - { src: 'motd', dest: '/etc/motd' }
