@@ -1,15 +1,22 @@
 ---
 - name: Get validator address
-  shell: "cat {{ parity_dir }}/keys/PrivateChain/{{ inventory_hostname }} | jq '.address' | sed 's/\"//g'"
+  shell: "cat {{ parity_base_path }}/keys/PrivateChain/{{ inventory_hostname }} | jq '.address' | sed 's/\"//g'"
   register: validator_address
+  tags:
+    - tmp
 
 - name: Add validator to config.toml
   lineinfile: >-
-    dest='{{ parity_dir }}/config.toml'
+    dest='{{ parity_base_path }}/config.toml'
     state=present
     backrefs=yes
-    regexp='^engine_signer.*'
-    line='engine_signer = "0x{{ validator_address.stdout }}"'
+    regexp='^{{ item.key }}.*'
+    line='{{ item.key }} = {{ item.value }}'
+  with_items:
+    - { key: 'engine_signer', value: '"0x{{ validator_address.stdout }}"' }
+    - { key: 'interface', value: '"{{ ansible_default_ipv4.address }}"' }
+  tags:
+    - tmp
 
 - name: Reload supervisor to start parity
   service: name=supervisor state=reloaded
@@ -25,10 +32,10 @@
   register: enodes
   with_items: '{{ private_ips.stdout }}'
 
-- file: path={{ parity_dir }}/enode.sh state=touch owner=root group=root mode=0755
+- file: path={{ parity_base_path }}/enode.sh state=touch owner=root group=root mode=0755
 
 - lineinfile:
-    dest: '{{ parity_dir }}/enode.sh'
+    dest: '{{ parity_base_path }}/enode.sh'
     line: "curl --data '{\"jsonrpc\":\"2.0\",\"method\":\"parity_addReservedPeer\",\"params\":[{{ item }}],\"id\":0}' -H \"Content-Type: application/json\" -X POST localhost:8545"
   with_items:
     - '{{ enodes.results[0].stdout }}'
