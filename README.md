@@ -28,11 +28,6 @@ cd ./packer/
 packer build ./parity-poa.json
 ```
 
-## Validation
-```bash
-packer validate ./parity-poa.json
-```
-
 # CloudFormation
 
 
@@ -65,6 +60,23 @@ aws cloudformation deploy \
   --parameter-overrides ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
   --stack-name i4i2
 ```
+
+## After deployment
+
+### Configure servers.
+```bash
+cd ansible
+ansible-playbook -i hosts site.yml
+```
+
+### Connect Parity nodes each other
+TODO:
+
+### Migrate private chain contracts from Bastion server
+TODO:
+
+### Fix API Gateway's `requestTemplates` and deploy again
+TODO:
 
 ## EIP
 

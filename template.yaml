@@ -104,7 +104,30 @@ Resources:
                 connectionType: VPC_LINK
                 requestTemplates:
                   application/json: "{\"jsonrpc\":\"2.0\",\"method\":\"personal_newAccount\",\"params\":[\"password\"],\"id\":1}"
-
+          /wallet/balance:
+            post:
+              description: 'ウォレットの残高を取得'
+              responses:
+                '200':
+                  description: 'ウォレットの残高'
+                  schema:
+                    type: object
+                    properties:
+                      result:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json: "{}"
+                  # プライベートチェーンコントラクトデプロイ後に設定
+                  # application/json: "{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"from\": \"0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6\", \"to\": \"0x1383b25f9ba231e3a1a1e45c0b5689d778d44ad5\", \"data\": \"0x70a082310000000000000000000000007ad8f90cfa071c8420e3f09fe0e413d0c47502e6\"}, \"latest\"],\"id\":1}"
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
