@@ -66,6 +66,30 @@ Resources:
       LoadBalancerArn: !Ref NLB
       Port: 8545
       Protocol: TCP
+  PrivateChainInternalAPIRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: "PrivateChainInternalAPIPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+            - Effect: Allow
+              Action:
+                - execute-api:Invoke
+              Resource:
+                - 'arn:aws:execute-api:ap-northeast-1:*'
+                # FIXME: リソース生成後に指定
+                # - arn:aws:execute-api:ap-northeast-1:090169530579:ohie9qzzjj/*/POST/accounts/new
   API:
     Type: 'AWS::Serverless::Api'
     Properties:
@@ -126,7 +150,7 @@ Resources:
                 connectionType: VPC_LINK
                 requestTemplates:
                   application/json: "{}"
-                  # プライベートチェーンコントラクトデプロイ後に設定
+                  # FIXME: プライベートチェーンコントラクトデプロイ後に設定
                   # application/json: "{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"from\": \"0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6\", \"to\": \"0x1383b25f9ba231e3a1a1e45c0b5689d778d44ad5\", \"data\": \"0x70a082310000000000000000000000007ad8f90cfa071c8420e3f09fe0e413d0c47502e6\"}, \"latest\"],\"id\":1}"
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'

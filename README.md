@@ -75,8 +75,8 @@ TODO:
 ### Migrate private chain contracts from Bastion server
 TODO:
 
-### Fix API Gateway's `requestTemplates` and deploy again
-TODO:
+### Fix template.yaml's `FIXME:` tags and deploy again
+Such as IAM Policies, API Gateway's `requestTemplates`, and others.
 
 ## EIP
 
