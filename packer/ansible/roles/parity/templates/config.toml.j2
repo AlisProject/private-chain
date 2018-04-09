@@ -15,13 +15,11 @@ port = 30303
 discovery = false
 min_peers = 3
 max_peers = 3
-reserved_only = true
-reserved_peers = "./reserved_peers"
 no_serve_light = true
 allow_ips = "private"
 [rpc]
 port = 8545
-apis = ["safe", "personal"]
+apis = ["safe", "personal", "parity_set"]
 interface = "all"
 server_threads = 14
 processing_threads = 4

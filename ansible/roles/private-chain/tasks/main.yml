@@ -2,8 +2,6 @@
 - name: Get validator address
   shell: "cat {{ parity_base_path }}/keys/PrivateChain/{{ inventory_hostname }} | jq '.address' | sed 's/\"//g'"
   register: validator_address
-  tags:
-    - tmp
 
 - name: Add validator to config.toml
   lineinfile: >-
@@ -14,9 +12,6 @@
     line='{{ item.key }} = {{ item.value }}'
   with_items:
     - { key: 'engine_signer', value: '"0x{{ validator_address.stdout }}"' }
-    - { key: 'interface', value: '"{{ ansible_default_ipv4.address }}"' }
-  tags:
-    - tmp
 
 - name: Reload supervisor to start parity
   service: name=supervisor state=reloaded
