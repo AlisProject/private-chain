@@ -4,6 +4,10 @@ Transform: AWS::Serverless-2016-10-31
 Parameters:
   ParityNodesAMI:
     Type: 'String'
+  BastionAllocationId:
+    Type: 'String'
+  NatAllocationId:
+    Type: 'String'
 
 Resources:
   PrivateChain:
@@ -174,81 +178,6 @@ Resources:
           Value: PrivateSubNet2
         - Key: Component
           Value: PrivateChain
-  ELBSecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
-    Properties:
-      VpcId: !Ref PrivateChain
-      GroupName: ELBSecurityGroup
-      GroupDescription: Security Group for ELB.
-      Tags:
-        - Key: Name
-          Value: ELBSecurityGroup
-        - Key: Component
-          Value: PrivateChain
-  ELB:
-    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
-    Properties:
-      LoadBalancerName: ELB
-      Scheme: internal
-      Subnets:
-        - !Ref PrivateSubNet1
-        - !Ref PrivateSubNet2
-      Listeners:
-        - LoadBalancerPort: '8545'
-          InstancePort: '8545'
-          Protocol: HTTP
-          InstanceProtocol: HTTP
-      Instances:
-        - !Ref PCParityPoA1a
-        - !Ref PCParityPoA2a
-        - !Ref PCParityPoA1c
-        - !Ref PCParityPoA2c
-      SecurityGroups:
-        - !Ref ELBSecurityGroup
-      Tags:
-        - Key: Name
-          Value: ELB
-        - Key: Component
-          Value: PrivateChain
-  RoleToELB:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      Policies:
-        - PolicyName: ELBFullAccess
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action: '*'
-                Resource: '*'
-  GetBalance:
-    Type: 'AWS::Lambda::Function'
-    Properties:
-      Runtime: python3.6
-      Code:
-        ZipFile: ./tmp.zip
-      Handler: handler.lambda_handler
-      Role: !GetAtt RoleToELB.Arn
-      VpcConfig:
-        SecurityGroupIds:
-          - !Ref PrivateSecurityGroup
-        SubnetIds:
-          - !Ref PrivateSubNet1
-          - !Ref PrivateSubNet2
-      Tags:
-        - Key: Name
-          Value: GetBalance
-        - Key: Component
-          Value: PrivateChain
   PrivateSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -265,11 +194,6 @@ Resources:
           ToPort: '30303'
           CidrIp: 10.1.0.0/24
           Description: 'For enodes.'
-        - IpProtocol: tcp
-          FromPort: '8545'
-          ToPort: '8545'
-          SourceSecurityGroupId: !Ref ELBSecurityGroup
-          Description: 'For RPC.'
         - IpProtocol: tcp
           FromPort: '8545'
           ToPort: '8545'
@@ -407,10 +331,10 @@ Resources:
           Value: Bastion
         - Key: Component
           Value: PrivateChain
-  EIPAssociation:
+  BastionEIPAssociation:
     Type: 'AWS::EC2::EIPAssociation'
     Properties:
-      AllocationId: eipalloc-4e2c3274
+      AllocationId: !Ref BastionAllocationId
       InstanceId: !Ref Bastion
   PublicSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -451,7 +375,7 @@ Resources:
   NatGateway:
     Type: 'AWS::EC2::NatGateway'
     Properties:
-      AllocationId: eipalloc-0e273934
+      AllocationId: !Ref NatAllocationId
       SubnetId: !Ref PublicSubnet
       Tags:
         - Key: Name

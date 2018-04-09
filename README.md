@@ -36,7 +36,7 @@ packer build ./parity-poa.json
 aws ec2 create-key-pair --key-name private-chain
 ```
 
-## Create EIP and edit template.yml
+## Create EIP
 ```bash
 # For Bastion server
 aws ec2 allocate-address --domain vpc \
@@ -48,16 +48,18 @@ aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
   | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT Key=Component,Value=PrivateChain --resources  
 ```
-You have to change `AllocationId` in EIP section of `template.yml` to new AllocationIds you got above.
 
 ## Deploy
-You should specify your AMI ID that you made above to `<YOUR-AMI-IMAGE-ID-HERE>`.
+You should specify your valuables such as AMI ID that you made above to `<YOUR-AMI-IMAGE-ID-HERE>`.
 
 ```bash;
 aws cloudformation deploy \
   --template-file template.yaml \
   --capabilities CAPABILITY_IAM \
-  --parameter-overrides ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
+  --parameter-overrides \ 
+    ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
+    BastionAllocationId=<YOUR-BASTION-ALLOCAITON-ID-HERE> \
+    NatAllocationId=<YOUR-NAT-ALLOCAITON-ID-HERE> \
   --stack-name i4i2
 ```
 
@@ -70,26 +72,14 @@ ansible-playbook -i hosts site.yml
 ```
 
 ### Connect Parity nodes each other
-TODO:
+You can use `[parity dir]/enode.sh`.
+
 
 ### Migrate private chain contracts from Bastion server
-TODO:
+See: [Private chain contracts](https://github.com/AlisProject/private-chain-contracts)
 
 ### Fix template.yaml's `FIXME:` tags and deploy again
 Such as IAM Policies, API Gateway's `requestTemplates`, and others.
-
-## EIP
-
-### Create EIP
-```bash
-aws ec2 allocate-address --domain vpc
-```
-
-### Associate EIP to Bastion server that made by CloudFormation  
-
-```bash
-aws ec2 associate-address --allocation-id {eip-allocation-id} --instance {bastion-server-instance-id}
-```
 
 # Connect Instances via Bastion
 - Prerequisite: [ec2ssh](https://github.com/mirakui/ec2ssh) 
