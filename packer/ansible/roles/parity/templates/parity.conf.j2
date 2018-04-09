@@ -1,5 +1,5 @@
 [program:Parity]
-command=/usr/bin/parity --config {{ parity_dir }}/config.toml
+command=/usr/bin/parity --config {{ parity_base_path }}/config.toml
 user=root
 autorestart=true
 stdout_logfile=/var/log/supervisor/jobs/parity.log

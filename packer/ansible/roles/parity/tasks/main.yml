@@ -23,13 +23,13 @@
 - name: Create dirctries
   file: path={{ item }} state=directory owner=root group=root mode=0755
   with_items:
-    - "{{ parity_dir }}"
-    - "{{ parity_dir }}/keys"
-    - "{{ parity_dir }}/keys/PrivateChain"
+    - "{{ parity_base_path }}"
+    - "{{ parity_base_path }}/keys"
+    - "{{ parity_base_path }}/keys/PrivateChain"
     - "/var/log/supervisor/jobs"
 
 - name: Deliver configuration files for Parity private chain
-  template: src={{ item.src }} dest={{ parity_dir }}/{{ item.dest }} backup=yes
+  template: src={{ item.src }} dest={{ parity_base_path }}/{{ item.dest }} backup=yes
   with_items:
     - { src: 'spec.json.j2', dest: 'spec.json' }
     - { src: 'config.toml.j2', dest: 'config.toml' }
@@ -41,7 +41,7 @@
     - { src: 'parity.conf.j2', dest: 'parity.conf' }
 
 - name: Deliver ETH account key files
-  template: src={{ item.src }} dest={{ parity_dir }}//keys/PrivateChain/{{ item.dest }} backup=yes mode=600
+  template: src={{ item.src }} dest={{ parity_base_path }}//keys/PrivateChain/{{ item.dest }} backup=yes mode=600
   with_items:
     - { src: 'PCParityPoA1a_key.j2', dest: 'PCParityPoA1a' }
     - { src: 'PCParityPoA2a_key.j2', dest: 'PCParityPoA2a' }

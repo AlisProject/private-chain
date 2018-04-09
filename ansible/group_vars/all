@@ -1,4 +1,4 @@
 ---
 
-parity_dir: /root/.local/share/io.parity.ethereum
+parity_base_path: /root/.local/share/io.parity.ethereum
 ethbase_password: YOURPASSWORDHERE

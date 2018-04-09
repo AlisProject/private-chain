@@ -1,18 +1,45 @@
 [parity]
-chain = "{{ parity_dir }}/spec.json"
-base_path = "{{ parity_dir }}"
+mode = "active"
+chain = "{{ parity_base_path }}/spec.json"
+base_path = "{{ parity_base_path }}"
+auto_update = "none"
+release_track = "stable"
+identity = "{{ inventory_hostname }}"
+[account]
+password = ["{{ parity_base_path }}/node.pwds"]
+refresh_time = 0
+[ui]
+disable = true
 [network]
-port = 30300
+port = 30303
+discovery = false
+min_peers = 3
+max_peers = 3
+no_serve_light = true
+allow_ips = "private"
 [rpc]
 port = 8545
-apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc", "parity_accounts"]
-hosts = ["all"]
+apis = ["safe", "personal", "parity_set"]
 interface = "all"
-[ui]
-port = 8180
-[account]
-password = ["{{ parity_dir }}/node.pwds"]
+server_threads = 14
+processing_threads = 4
+[websockets]
+disable = true
+[ipc]
+disable = true
+[dapps]
+disable = true
+[ipfs]
+enable = false
+[secretstore]
+disable = true
 [mining]
 engine_signer = "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e"
 reseal_on_txs = "none"
 usd_per_tx = "0"
+tx_queue_mem_limit = 1024
+[footprint]
+cache_size_db = 1024
+cache_size_blocks = 1024
+cache_size_queue = 1024
+cache_size_state = 1024

@@ -261,8 +261,8 @@ Resources:
           ToPort: '22'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: '30300'
-          ToPort: '30300'
+          FromPort: '30303'
+          ToPort: '30303'
           CidrIp: 10.1.0.0/24
           Description: 'For enodes.'
         - IpProtocol: tcp
@@ -294,6 +294,13 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+          NoDevice: {}
       Tags:
         - Key: Name
           Value: PCParityPoA1a
@@ -308,6 +315,13 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+          NoDevice: {}
       Tags:
         - Key: Name
           Value: PCParityPoA2a
@@ -322,6 +336,13 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+          NoDevice: {}
       Tags:
         - Key: Name
           Value: PCParityPoA1c
@@ -336,6 +357,13 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+          NoDevice: {}
       Tags:
         - Key: Name
           Value: PCParityPoA2c
