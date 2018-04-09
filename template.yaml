@@ -4,6 +4,10 @@ Transform: AWS::Serverless-2016-10-31
 Parameters:
   ParityNodesAMI:
     Type: 'String'
+  BastionAllocationId:
+    Type: 'String'
+  NatAllocationId:
+    Type: 'String'
 
 Resources:
   PrivateChain:
@@ -330,7 +334,7 @@ Resources:
   BastionEIPAssociation:
     Type: 'AWS::EC2::EIPAssociation'
     Properties:
-      AllocationId: eipalloc-4e2c3274
+      AllocationId: !Ref BastionAllocationId
       InstanceId: !Ref Bastion
   PublicSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -371,7 +375,7 @@ Resources:
   NatGateway:
     Type: 'AWS::EC2::NatGateway'
     Properties:
-      AllocationId: eipalloc-0e273934
+      AllocationId: !Ref NatAllocationId
       SubnetId: !Ref PublicSubnet
       Tags:
         - Key: Name
