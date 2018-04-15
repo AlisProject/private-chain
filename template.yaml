@@ -299,7 +299,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       VpcId: !Ref PrivateChain
-      AvailabilityZone: ap-northeast-1c
+      AvailabilityZone: ap-northeast-1d
       CidrBlock: 10.1.0.32/28
       Tags:
         - Key: Name
