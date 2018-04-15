@@ -32,7 +32,8 @@ Resources:
       Name: !Ref AWS::StackName
       Scheme: internal
       Subnets:
-        - !Ref PublicSubnet
+        - !Ref PrivateSubNet1
+        - !Ref PrivateSubNet2
       Type: network
       Tags:
         - Key: Name
@@ -42,7 +43,7 @@ Resources:
   NlbTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
-      Name: NlbTargetGroup
+      Name: !Ref AWS::StackName
       Port: 8545
       Protocol: TCP
       Tags:
@@ -189,6 +190,7 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIp: 0.0.0.0/0
+          Description: 'For SSH.'
         - IpProtocol: tcp
           FromPort: '30303'
           ToPort: '30303'
@@ -198,12 +200,12 @@ Resources:
           FromPort: '8545'
           ToPort: '8545'
           SourceSecurityGroupId: !Ref PublicSecurityGroup
-          Description: 'For RPC.'
+          Description: 'For RPC from Bastion.'
         - IpProtocol: tcp
           FromPort: '8545'
           ToPort: '8545'
           CidrIp: 10.1.0.0/24
-          Description: 'For RPC.'
+          Description: 'For health check.'
       Tags:
         - Key: Name
           Value: PrivateSecurityGroup
