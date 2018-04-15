@@ -29,7 +29,7 @@ Resources:
   NLB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     Properties:
-      Name: NLB
+      Name: !Ref AWS::StackName
       Scheme: internal
       Subnets:
         - !Ref PublicSubnet
@@ -363,6 +363,7 @@ Resources:
           Value: PrivateChain
   PublicRoute:
     Type: 'AWS::EC2::Route'
+    DependsOn: VPCGatewayAttachment
     Properties:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
