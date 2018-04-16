@@ -71,6 +71,7 @@ Resources:
       LoadBalancerArn: !Ref NLB
       Port: 8545
       Protocol: TCP
+  # 本来はこのRoleは不要でPolicyのみ作成したいが不可能なのでRoleごと作る
   PrivateChainInternalAPIRole:
     Type: "AWS::IAM::Role"
     Properties:
