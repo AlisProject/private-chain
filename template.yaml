@@ -220,6 +220,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -241,6 +243,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -262,6 +266,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -283,6 +289,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -328,6 +336,15 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PublicSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+          NoDevice: {}
       Tags:
         - Key: Name
           Value: Bastion
@@ -410,3 +427,35 @@ Resources:
     Properties:
       SubnetId: !Ref PrivateSubNet2
       RouteTableId: !Ref PrivateRouteTable
+  LogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: LogRolePolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:Create*
+            - logs:PutLogEvents
+            - s3:GetObject
+            Resource:
+            - arn:aws:logs:*:*:*
+            - arn:aws:s3:::*
+  LogRoleInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: LogRole
