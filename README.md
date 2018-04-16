@@ -56,7 +56,7 @@ You should specify your valuables such as AMI ID that you made above to `<YOUR-A
 aws cloudformation deploy \
   --template-file template.yaml \
   --capabilities CAPABILITY_IAM \
-  --parameter-overrides \ 
+  --parameter-overrides \
     ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
     BastionAllocationId=<YOUR-BASTION-ALLOCAITON-ID-HERE> \
     NatAllocationId=<YOUR-NAT-ALLOCAITON-ID-HERE> \

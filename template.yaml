@@ -29,10 +29,11 @@ Resources:
   NLB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     Properties:
-      Name: NLB
+      Name: !Ref AWS::StackName
       Scheme: internal
       Subnets:
-        - !Ref PublicSubnet
+        - !Ref PrivateSubNet1
+        - !Ref PrivateSubNet2
       Type: network
       Tags:
         - Key: Name
@@ -42,7 +43,7 @@ Resources:
   NlbTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
-      Name: NlbTargetGroup
+      Name: !Ref AWS::StackName
       Port: 8545
       Protocol: TCP
       Tags:
@@ -70,6 +71,7 @@ Resources:
       LoadBalancerArn: !Ref NLB
       Port: 8545
       Protocol: TCP
+  # 本来はこのRoleは不要でPolicyのみ作成したいが不可能なのでRoleごと作る
   PrivateChainInternalAPIRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -189,6 +191,7 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIp: 0.0.0.0/0
+          Description: 'For SSH.'
         - IpProtocol: tcp
           FromPort: '30303'
           ToPort: '30303'
@@ -198,12 +201,12 @@ Resources:
           FromPort: '8545'
           ToPort: '8545'
           SourceSecurityGroupId: !Ref PublicSecurityGroup
-          Description: 'For RPC.'
+          Description: 'For RPC from Bastion.'
         - IpProtocol: tcp
           FromPort: '8545'
           ToPort: '8545'
           CidrIp: 10.1.0.0/24
-          Description: 'For RPC.'
+          Description: 'For health check.'
       Tags:
         - Key: Name
           Value: PrivateSecurityGroup
@@ -218,6 +221,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -239,6 +244,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -260,6 +267,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -281,6 +290,8 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PrivateSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
       BlockDeviceMappings:
         - DeviceName: "/dev/sda1"
           Ebs:
@@ -297,7 +308,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       VpcId: !Ref PrivateChain
-      AvailabilityZone: ap-northeast-1c
+      AvailabilityZone: ap-northeast-1d
       CidrBlock: 10.1.0.32/28
       Tags:
         - Key: Name
@@ -326,6 +337,15 @@ Resources:
       KeyName: private-chain
       SecurityGroupIds:
         - !Ref PublicSecurityGroup
+      IamInstanceProfile:
+        Ref: LogRoleInstanceProfile
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            VolumeType: "gp2"
+            DeleteOnTermination: "false"
+            VolumeSize: "200"
+          NoDevice: {}
       Tags:
         - Key: Name
           Value: Bastion
@@ -363,6 +383,7 @@ Resources:
           Value: PrivateChain
   PublicRoute:
     Type: 'AWS::EC2::Route'
+    DependsOn: VPCGatewayAttachment
     Properties:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
@@ -407,3 +428,35 @@ Resources:
     Properties:
       SubnetId: !Ref PrivateSubNet2
       RouteTableId: !Ref PrivateRouteTable
+  LogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: LogRolePolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:Create*
+            - logs:PutLogEvents
+            - s3:GetObject
+            Resource:
+            - arn:aws:logs:*:*:*
+            - arn:aws:s3:::*
+  LogRoleInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: LogRole
