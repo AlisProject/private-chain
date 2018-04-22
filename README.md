@@ -60,7 +60,7 @@ aws cloudformation deploy \
     ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
     BastionAllocationId=<YOUR-BASTION-ALLOCAITON-ID-HERE> \
     NatAllocationId=<YOUR-NAT-ALLOCAITON-ID-HERE> \
-  --stack-name i4i2
+  --stack-name privatechain
 ```
 
 ## After deployment
