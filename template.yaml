@@ -235,6 +235,8 @@ Resources:
           Value: PCParityPoA1a
         - Key: Component
           Value: PrivateChain
+        - Key: Backup
+          Value: yes
   PCParityPoA2a:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -258,6 +260,8 @@ Resources:
           Value: PCParityPoA2a
         - Key: Component
           Value: PrivateChain
+        - Key: Backup
+          Value: yes
   PCParityPoA1c:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -281,6 +285,8 @@ Resources:
           Value: PCParityPoA1c
         - Key: Component
           Value: PrivateChain
+        - Key: Backup
+          Value: yes
   PCParityPoA2c:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -304,6 +310,8 @@ Resources:
           Value: PCParityPoA2c
         - Key: Component
           Value: PrivateChain
+        - Key: Backup
+          Value: yes
   PublicSubnet:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -351,6 +359,8 @@ Resources:
           Value: Bastion
         - Key: Component
           Value: PrivateChain
+        - Key: Backup
+          Value: yes
   BastionEIPAssociation:
     Type: 'AWS::EC2::EIPAssociation'
     Properties:
