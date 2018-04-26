@@ -2,7 +2,11 @@
 ## Parity PoAプライベートチェーンを構築するEC2インスタンスに使用するAMIのID
 export PARITY_NODES_AMI=ami-xxxxxxxx
 
+## Parity PoAのインスタンスのタイプ
+export PARITY_NODES_INSTANCE_TYPE=m4.large
 
+## Parity PoAのインスタンスの容量(GB)
+export PARITY_NODES_VOLUME_SIZE=200
 
 # アカウント新規作成時のRPCリクエスト
 # API Gatewayのマッピングテンプレートとして使用し、VPC Linkを経由してプライベートチェーンへリクエストを送る
@@ -21,9 +25,9 @@ export PARITY_NODES_AMI=ami-xxxxxxxx
 #
 export ACCOUNTS_NEW_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"personal_newAccount\",\"params\":[\"password\"],\"id\":1}"
 
-
 # トークン残高取得時のRPCリクエスト
 # API Gatewayのマッピングテンプレートとして使用し、VPC Linkを経由してプライベートチェーンへリクエストを送る
+# ⚠ 環境ができてから出ないと各種アドレスが確定しないので、のちほどここの値を修正してデプロイしなおす必要あり
 #
 # {
 #   "jsonrpc": "2.0",
@@ -47,6 +51,7 @@ export ACCOUNTS_NEW_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"personal
 #           see: https://github.com/AlisProject/serverless-application
 #
 export WALLET_BALANCE_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"from\":\"0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6\",\"to\":\"0xbbfce3c05aef921b35c7264fff21bb08f490a821\",\"data\":\"0x70a08231000000000000000000000000\$input.json('private_eth_address').replaceAll('\\\"','')\"},\"latest\"],\"id\":1}"
+
 
 # --- AWS ---
 
