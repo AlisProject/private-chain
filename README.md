@@ -5,12 +5,18 @@
 - packer
 - ansible
 - jq
+- direnv
 
 # Environment valuables
+
 ```bash
-export AWS_ACCESS_KEY_ID=YOURAWSACCESSKEY
-export AWS_SECRET_ACCESS_KEY=YOURAWSSECRETKEY
-``` 
+# Create .envrc to suit your environment.
+cp -pr .envrc.sample .envrc
+vi .envrc # edit
+
+# allow
+direnv allow
+```
 
 # Packer
 Build an AMI that the nodes of Parity PoA.  
@@ -26,6 +32,9 @@ Also `spec.json`.
 ```bash
 cd ./packer/
 packer build ./parity-poa.json
+
+# Add Generated AMI ID to .envrc
+direnv edit
 ```
 
 # CloudFormation
@@ -47,19 +56,22 @@ aws ec2 allocate-address --domain vpc \
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
   | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT Key=Component,Value=PrivateChain --resources  
+  
+# Add Generated Allocation IDs to .envrc
+direnv edit  
 ```
 
 ## Deploy
-You should specify your valuables such as AMI ID that you made above to `<YOUR-AMI-IMAGE-ID-HERE>`.
+You have to specify all of your environment valuables to `.envrc`.
 
 ```bash;
 aws cloudformation deploy \
   --template-file template.yaml \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides \
-    ParityNodesAMI=<YOUR-AMI-IMAGE-ID-HERE> \
-    BastionAllocationId=<YOUR-BASTION-ALLOCAITON-ID-HERE> \
-    NatAllocationId=<YOUR-NAT-ALLOCAITON-ID-HERE> \
+    ParityNodesAMI=${PARITY_NODES_AMI} \
+    BastionAllocationId=${BASTION_ALLOCATION_ID} \
+    NatAllocationId=${NAT_ALLOCATION_ID} \
   --stack-name privatechain
 ```
 
@@ -79,7 +91,7 @@ You can use `[parity dir]/enode.sh`.
 See: [Private chain contracts](https://github.com/AlisProject/private-chain-contracts)
 
 ### Fix template.yaml's `FIXME:` tags and deploy again
-Such as IAM Policies, API Gateway's `requestTemplates`, and others.
+Such as IAM Policies, and others.
 
 # Connect Instances via Bastion
 - Prerequisite: [ec2ssh](https://github.com/mirakui/ec2ssh) 
