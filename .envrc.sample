@@ -3,7 +3,53 @@
 export PARITY_NODES_AMI=ami-xxxxxxxx
 
 
+
+# アカウント新規作成時のRPCリクエスト
+# API Gatewayのマッピングテンプレートとして使用し、VPC Linkを経由してプライベートチェーンへリクエストを送る
+#
+# {
+#   "jsonrpc": "2.0",
+#   "method": "personal_newAccount",
+#   "params": [
+#     "password"
+#   ],
+#   "id": 1
+# }
+#
+# パラメータ詳細:
+#   - password: 作成するアカウントのパスワード。本番環境では要変更
+#
+export ACCOUNTS_NEW_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"personal_newAccount\",\"params\":[\"password\"],\"id\":1}"
+
+
+# トークン残高取得時のRPCリクエスト
+# API Gatewayのマッピングテンプレートとして使用し、VPC Linkを経由してプライベートチェーンへリクエストを送る
+#
+# {
+#   "jsonrpc": "2.0",
+#   "method": "eth_call",
+#   "params": [
+#     {
+#       "from": "0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6",
+#       "to": "0xbbfce3c05aef921b35c7264fff21bb08f490a821",
+#       "data": "0x70a08231000000000000000000000000$input.json('private_eth_address').replaceAll('\"','')"
+#     },
+#     "latest"
+#   ],
+#   "id": 1
+# }
+#
+# パラメータ詳細:
+#   - from: トランザクションを生成するEOAのアドレス
+#   - to: トークン残高を取得する対象のETHアドレス
+#   - data: メソッド呼び出しをコード化したもの。`balanceOf(address)` を意味する
+#           private_eth_address はサーバレスアプリケーションから渡される
+#           see: https://github.com/AlisProject/serverless-application
+#
+export WALLET_BALANCE_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"from\":\"0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6\",\"to\":\"0xbbfce3c05aef921b35c7264fff21bb08f490a821\",\"data\":\"0x70a08231000000000000000000000000\$input.json('private_eth_address').replaceAll('\\\"','')\"},\"latest\"],\"id\":1}"
+
 # --- AWS ---
+
 ## aws-cli
 ## aws-cliが依存する環境変数。
 ##   - see: https://qiita.com/n-oshiro/items/4a7774ee6e1d11bb55d2
@@ -17,3 +63,8 @@ export AWS_SECRET_ACCESS_KEY=iU6/q6ls5i5pDBPxxxxxxxxxxxxxxxxxxxx
 ## それぞれ踏み台サーバ(Bastion)とNATのEIPのAllocation ID
 export BASTION_ALLOCATION_ID=eipalloc-xxxxxxxx
 export NAT_ALLOCATION_ID=eipalloc-xxxxxxxx
+
+## Cloud Formation
+## デプロイを行う際のStack名。テストの際にも使用している
+## ⚠ ハイフンを含めるとエラーとなる
+export CLOUDFORMATION_STACK_NAME=yourstacknamehere

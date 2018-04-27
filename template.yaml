@@ -8,6 +8,10 @@ Parameters:
     Type: 'String'
   NatAllocationId:
     Type: 'String'
+  AccountsNewRequestTemplate:
+    Type: 'String'
+  WalletBalanceRequestTemplate:
+    Type: 'String'
 
 Resources:
   PrivateChain:
@@ -133,7 +137,7 @@ Resources:
                 connectionId: !Ref PrivateChainVpcLink
                 connectionType: VPC_LINK
                 requestTemplates:
-                  application/json: "{\"jsonrpc\":\"2.0\",\"method\":\"personal_newAccount\",\"params\":[\"password\"],\"id\":1}"
+                  application/json: !Ref AccountsNewRequestTemplate
           /wallet/balance:
             post:
               description: 'ウォレットの残高を取得'
@@ -143,7 +147,7 @@ Resources:
                   schema:
                     type: object
                     properties:
-                      result:
+                      private_eth_address:
                         type: 'string'
               x-amazon-apigateway-integration:
                 responses:
@@ -155,9 +159,7 @@ Resources:
                 connectionId: !Ref PrivateChainVpcLink
                 connectionType: VPC_LINK
                 requestTemplates:
-                  application/json: "{}"
-                  # FIXME: プライベートチェーンコントラクトデプロイ後に設定
-                  # application/json: "{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"from\": \"0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6\", \"to\": \"0x1383b25f9ba231e3a1a1e45c0b5689d778d44ad5\", \"data\": \"0x70a082310000000000000000000000007ad8f90cfa071c8420e3f09fe0e413d0c47502e6\"}, \"latest\"],\"id\":1}"
+                  application/json: !Ref WalletBalanceRequestTemplate
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
