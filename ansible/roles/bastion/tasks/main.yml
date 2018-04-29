@@ -22,6 +22,7 @@
     - 'export PATH="$HOME/.ndenv/bin:$PATH"'
     - 'eval "$(ndenv init -)"'
     - 'export PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS={{ private_chain_alis_token_address }}'
+    - 'export PRIVATE_CHAIN_MAIN_SIGNER_ADDRESS={{ private_chain_main_signer_address }}'
 
 - name: Install and prepare modules
   shell: "{{ item }}"
