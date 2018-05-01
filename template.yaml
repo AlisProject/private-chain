@@ -8,7 +8,7 @@ Parameters:
     Type: 'String'
   NatAllocationId:
     Type: 'String'
-  AccountsNewRequestTemplate:
+  AccountsNewRequestPassword:
     Type: 'String'
   WalletBalanceRequestTemplate:
     Type: 'String'
@@ -137,7 +137,20 @@ Resources:
                 connectionId: !Ref PrivateChainVpcLink
                 connectionType: VPC_LINK
                 requestTemplates:
-                  application/json: !Ref AccountsNewRequestTemplate
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "personal_newAccount",
+                          "params": [
+                            "${AccountsNewRequestPassword}"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          AccountsNewRequestPassword: !Ref AccountsNewRequestPassword
+                        }
           /wallet/balance:
             post:
               description: 'ウォレットの残高を取得'

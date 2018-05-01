@@ -72,7 +72,7 @@ aws cloudformation deploy \
     ParityNodesAMI=${PARITY_NODES_AMI} \
     BastionAllocationId=${BASTION_ALLOCATION_ID} \
     NatAllocationId=${NAT_ALLOCATION_ID} \
-    AccountsNewRequestTemplate=${ACCOUNTS_NEW_REQUEST_TEMPLATE} \
+    AccountsNewRequestPassword=${ACCOUNTS_NEW_REQUEST_PASSWORD} \
     WalletBalanceRequestTemplate=${WALLET_BALANCE_REQUEST_TEMPLATE} \
   --stack-name ${CLOUDFORMATION_STACK_NAME}privatechain
 ```

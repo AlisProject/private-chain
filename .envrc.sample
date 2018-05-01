@@ -4,22 +4,9 @@ export PARITY_NODES_AMI=ami-xxxxxxxx
 
 
 
-# アカウント新規作成時のRPCリクエスト
-# API Gatewayのマッピングテンプレートとして使用し、VPC Linkを経由してプライベートチェーンへリクエストを送る
-#
-# {
-#   "jsonrpc": "2.0",
-#   "method": "personal_newAccount",
-#   "params": [
-#     "password"
-#   ],
-#   "id": 1
-# }
-#
-# パラメータ詳細:
-#   - password: 作成するアカウントのパスワード。本番環境では要変更
-#
-export ACCOUNTS_NEW_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"personal_newAccount\",\"params\":[\"password\"],\"id\":1}"
+# アカウント新規作成時のRPCリクエストで使用する
+# 式作成されるアカウントのパスワードとして設定される
+export ACCOUNTS_NEW_REQUEST_PASSWORD=password
 
 
 # トークン残高取得時のRPCリクエスト
