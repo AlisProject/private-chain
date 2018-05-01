@@ -8,9 +8,11 @@ Parameters:
     Type: 'String'
   NatAllocationId:
     Type: 'String'
-  AccountsNewRequestTemplate:
+  AccountsNewRequestPassword:
     Type: 'String'
-  WalletBalanceRequestTemplate:
+  PrivateChainMainSigner:
+    Type: 'String'
+  PrivateChainAlisTokenAddress:
     Type: 'String'
 
 Resources:
@@ -137,7 +139,20 @@ Resources:
                 connectionId: !Ref PrivateChainVpcLink
                 connectionType: VPC_LINK
                 requestTemplates:
-                  application/json: !Ref AccountsNewRequestTemplate
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "personal_newAccount",
+                          "params": [
+                            "${AccountsNewRequestPassword}"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          AccountsNewRequestPassword: !Ref AccountsNewRequestPassword
+                        }
           /wallet/balance:
             post:
               description: 'ウォレットの残高を取得'
@@ -159,7 +174,26 @@ Resources:
                 connectionId: !Ref PrivateChainVpcLink
                 connectionType: VPC_LINK
                 requestTemplates:
-                  application/json: !Ref WalletBalanceRequestTemplate
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_call",
+                          "params": [
+                            {
+                              "from": "${PrivateChainMainSigner}",
+                              "to": "${PrivateChainAlisTokenAddress}",
+                              "data": "0x70a08231000000000000000000000000$input.json('private_eth_address').replaceAll('\"','')"
+                            },
+                            "latest"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainMainSigner: !Ref PrivateChainMainSigner,
+                          PrivateChainAlisTokenAddress: !Ref PrivateChainAlisTokenAddress
+                        }
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
