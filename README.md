@@ -73,7 +73,8 @@ aws cloudformation deploy \
     BastionAllocationId=${BASTION_ALLOCATION_ID} \
     NatAllocationId=${NAT_ALLOCATION_ID} \
     AccountsNewRequestPassword=${ACCOUNTS_NEW_REQUEST_PASSWORD} \
-    WalletBalanceRequestTemplate=${WALLET_BALANCE_REQUEST_TEMPLATE} \
+    PrivateChainMainSigner=${PRIVATE_CHAIN_MAIN_SIGNER} \
+    PrivateChainAlisTokenAddress=${PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS} \
   --stack-name ${CLOUDFORMATION_STACK_NAME}privatechain
 ```
 
