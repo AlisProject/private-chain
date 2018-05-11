@@ -14,6 +14,10 @@ Parameters:
     Type: 'String'
   PrivateChainAlisTokenAddress:
     Type: 'String'
+  ParityNodesInstanceType:
+    Type: 'String'
+  ParityNodesVolumeSize:
+    Type: 'Number'
 
 Resources:
   PrivateChain:
@@ -252,7 +256,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
-      InstanceType: m4.large
+      InstanceType: !Ref ParityNodesInstanceType
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -264,7 +268,7 @@ Resources:
           Ebs:
             VolumeType: "gp2"
             DeleteOnTermination: "false"
-            VolumeSize: "200"
+            VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
         - Key: Name
@@ -277,7 +281,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
-      InstanceType: m4.large
+      InstanceType: !Ref ParityNodesInstanceType
       SubnetId: !Ref PrivateSubNet1
       KeyName: private-chain
       SecurityGroupIds:
@@ -302,7 +306,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
-      InstanceType: m4.large
+      InstanceType: !Ref ParityNodesInstanceType
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:
@@ -327,7 +331,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       ImageId: !Ref ParityNodesAMI
-      InstanceType: m4.large
+      InstanceType: !Ref ParityNodesInstanceType
       SubnetId: !Ref PrivateSubNet2
       KeyName: private-chain
       SecurityGroupIds:

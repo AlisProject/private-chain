@@ -50,7 +50,7 @@ aws ec2 create-key-pair --key-name private-chain
 # For Bastion server
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPBastion Key=Component,Value=PrivateChain --resources
+  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPBastion-${CLOUDFORMATION_STACK_NAME} Key=Component,Value=PrivateChain --resources
   
 # For NAT
 aws ec2 allocate-address --domain vpc \
@@ -72,7 +72,10 @@ aws cloudformation deploy \
     ParityNodesAMI=${PARITY_NODES_AMI} \
     BastionAllocationId=${BASTION_ALLOCATION_ID} \
     NatAllocationId=${NAT_ALLOCATION_ID} \
-    AccountsNewRequestPassword=${ACCOUNTS_NEW_REQUEST_PASSWORD} \
+    AccountsNewRequestTemplate=${ACCOUNTS_NEW_REQUEST_TEMPLATE} \
+    WalletBalanceRequestTemplate=${WALLET_BALANCE_REQUEST_TEMPLATE} \
+    ParityNodesInstanceType=${PARITY_NODES_INSTANCE_TYPE} \
+    ParityNodesVolumeSize=${PARITY_NODES_VOLUME_SIZE} \
     PrivateChainMainSigner=${PRIVATE_CHAIN_MAIN_SIGNER} \
     PrivateChainAlisTokenAddress=${PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS} \
   --stack-name ${CLOUDFORMATION_STACK_NAME}privatechain
