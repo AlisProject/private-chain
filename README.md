@@ -68,6 +68,15 @@ You have to specify all of your environment valuables to `.envrc`. before deploy
 ./deploy.sh
 ```
 
+### Set IAM authentication
+
+```bash
+# Set PRIVATE_CHAIN_REST_API_ID to .envrc
+direnv edit
+
+./set_iam_authorization.sh
+```
+
 ## After deployment
 
 ### Configure servers.
