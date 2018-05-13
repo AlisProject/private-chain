@@ -81,6 +81,11 @@ export AWS_SECRET_ACCESS_KEY=iU6/q6ls5i5pDBPxxxxxxxxxxxxxxxxxxxx
 export BASTION_ALLOCATION_ID=eipalloc-xxxxxxxx
 export NAT_ALLOCATION_ID=eipalloc-xxxxxxxx
 
+## EC2
+## 生成したEC2インスタンスを削除する時にEBSも同時に削除するか否か
+## 本番環境ではtrueであるべき。
+export EC2_DELETE_ON_TERMINATION=false
+
 ## Cloud Formation
 ## デプロイを行う際のStack名。テストの際にも使用している
 ## ⚠ ハイフンを含めるとエラーとなる

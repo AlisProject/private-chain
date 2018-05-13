@@ -8,6 +8,8 @@ Parameters:
     Type: 'String'
   NatAllocationId:
     Type: 'String'
+  EC2DeleteOnTermination:
+    Type: 'String'
   AccountsNewRequestPassword:
     Type: 'String'
   PrivateChainMainSigner:
@@ -267,7 +269,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
@@ -292,7 +294,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -317,7 +319,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -342,7 +344,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -391,7 +393,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
