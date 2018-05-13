@@ -83,8 +83,8 @@ export NAT_ALLOCATION_ID=eipalloc-xxxxxxxx
 
 ## EC2
 ## 生成したEC2インスタンスを削除する時にEBSも同時に削除するか否か
-## 本番環境ではtrueであるべき。
-export EC2_DELETE_ON_TERMINATION=false
+## 本番環境ではfalseであるべき。
+export EC2_DELETE_ON_TERMINATION=true
 
 ## Cloud Formation
 ## デプロイを行う際のStack名。テストの際にも使用している
