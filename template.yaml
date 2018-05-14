@@ -38,6 +38,16 @@ Resources:
       Name: PrivateChainVpcLink
       TargetArns:
         - !Ref NLB
+  PrivateChainVPCFlowLog:
+    Type: 'AWS::EC2::FlowLog'
+    Properties:
+      DeliverLogsPermissionArn: !GetAtt
+        - LogRole
+        - Arn
+      LogGroupName: PrivateChainVPCFlowLog
+      ResourceId: !Ref PrivateChain
+      ResourceType: VPC
+      TrafficType: ALL
   NLB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     Properties:
@@ -490,6 +500,7 @@ Resources:
           Principal:
             Service:
             - ec2.amazonaws.com
+            - vpc-flow-logs.amazonaws.com
           Action:
           - sts:AssumeRole
       Path: "/"
