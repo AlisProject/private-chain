@@ -16,3 +16,9 @@ done
 aws apigateway create-deployment --rest-api-id ${PRIVATE_CHAIN_REST_API_ID} \
     --stage-name production \
     --description "for enable IAM authentications"
+
+# ---
+
+# Delete unnecessary Stage "Stage"
+# SAM's bug? https://github.com/awslabs/serverless-application-model/issues/168
+aws apigateway delete-stage --rest-api-id ${PRIVATE_CHAIN_REST_API_ID} --stage-name Stage
