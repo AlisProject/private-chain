@@ -3,23 +3,23 @@ Transform: AWS::Serverless-2016-10-31
 
 Parameters:
   ParityNodesAMI:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   BastionAllocationId:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   NatAllocationId:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   EC2DeleteOnTermination:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   AccountsNewRequestPassword:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   PrivateChainMainSigner:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   PrivateChainAlisTokenAddress:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   ParityNodesInstanceType:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
   ParityNodesVolumeSize:
-    Type: 'Number'
+    Type: 'AWS::SSM::Parameter::Value<String>'
 
 Resources:
   PrivateChain:

@@ -1,7 +1,7 @@
 # private-chain
 
 # Prerequisite
-- pyenv
+- aws-cli
 - packer
 - ansible
 - jq
@@ -12,10 +12,7 @@
 ```bash
 # Create .envrc to suit your environment.
 cp -pr .envrc.sample .envrc
-vi .envrc # edit
-
-# allow
-direnv allow
+direnv edit
 ```
 
 # Packer
@@ -37,9 +34,6 @@ packer build ./parity-poa.json
 direnv edit
 ```
 
-# CloudFormation
-
-
 ## Create EC2 KeyPair
 ```bash
 aws ec2 create-key-pair --key-name private-chain
@@ -50,19 +44,22 @@ aws ec2 create-key-pair --key-name private-chain
 # For Bastion server
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPBastion-${CLOUDFORMATION_STACK_NAME} Key=Component,Value=PrivateChain --resources
+  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPBastion-${ALIS_APP_ID} Key=Component,Value=PrivateChain --resources
   
 # For NAT
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT Key=Component,Value=PrivateChain --resources  
-  
-# Add Generated Allocation IDs to .envrc
-direnv edit  
+  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT Key=Component,Value=PrivateChain --resources
 ```
 
-## Deploy
-You have to specify all of your environment valuables to `.envrc`. before deployment.
+# Set SSM valuables
+You have to specify all of your SSM valuables.
+- See: https://github.com/AlisProject/environment
+
+
+# CloudFormation
+
+## Deployment
 
 ```bash;
 ./deploy.sh
@@ -94,6 +91,9 @@ See: [Private chain contracts](https://github.com/AlisProject/private-chain-cont
 
 ### Fix template.yaml's `FIXME:` tags and deploy again
 Such as IAM Policies, and others.
+
+### Set SSM valuables again
+- See: https://github.com/AlisProject/environment
 
 # Connect Instances via Bastion
 - Prerequisite: [ec2ssh](https://github.com/mirakui/ec2ssh) 
