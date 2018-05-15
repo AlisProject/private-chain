@@ -3,13 +3,13 @@ aws cloudformation deploy \
   --template-file template.yaml \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides \
-    ParityNodesAMI=${PARITY_NODES_AMI} \
-    BastionAllocationId=${BASTION_ALLOCATION_ID} \
-    NatAllocationId=${NAT_ALLOCATION_ID} \
-    EC2DeleteOnTermination=${EC2_DELETE_ON_TERMINATION} \
-    AccountsNewRequestPassword=${ACCOUNTS_NEW_REQUEST_PASSWORD} \
-    ParityNodesInstanceType=${PARITY_NODES_INSTANCE_TYPE} \
-    ParityNodesVolumeSize=${PARITY_NODES_VOLUME_SIZE} \
-    PrivateChainMainSigner=${PRIVATE_CHAIN_MAIN_SIGNER} \
-    PrivateChainAlisTokenAddress=${PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS} \
-  --stack-name ${CLOUDFORMATION_STACK_NAME}privatechain
+    ParityNodesAMI=${ALIS_APP_ID}ssmParityNodesAMI \
+    BastionAllocationId=${ALIS_APP_ID}ssmBastionAllocationId \
+    NatAllocationId=${ALIS_APP_ID}ssmNatAllocationId \
+    EC2DeleteOnTermination=${ALIS_APP_ID}ssmEC2DeleteOnTermination \
+    AccountsNewRequestPassword=${ALIS_APP_ID}ssmAccountsNewRequestPassword \
+    ParityNodesInstanceType=${ALIS_APP_ID}ssmParityNodesInstanceType \
+    ParityNodesVolumeSize=${ALIS_APP_ID}ssmParityNodesVolumeSize \
+    PrivateChainMainSigner=${ALIS_APP_ID}ssmPrivateChainMainSigner \
+    PrivateChainAlisTokenAddress=${ALIS_APP_ID}ssmPrivateChainAlisTokenAddress \
+  --stack-name ${ALIS_APP_ID}privatechain
