@@ -64,6 +64,12 @@ export WALLET_BALANCE_REQUEST_TEMPLATE="{\"jsonrpc\":\"2.0\",\"method\":\"eth_ca
 export PRIVATE_CHAIN_MAIN_SIGNER=0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6
 export PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS=0xbbfce3c05aef921b35c7264fff21bb08f490a821
 
+# CloudFormationで生成されたAPI GatewayのAPI ID
+# スクリプトから各APIにIAM認証をかけるのに利用している
+# 現状、SAMがIAM認証をサポートしていないため
+# TODO: SAMがIAM認証をサポートしたらteplate.yamlに集約してこの値とスクリプトを除却する
+#   - see: https://github.com/awslabs/serverless-application-model/issues/248
+export PRIVATE_CHAIN_REST_API_ID=pe6odilrre
 
 # --- AWS ---
 
@@ -80,6 +86,11 @@ export AWS_SECRET_ACCESS_KEY=iU6/q6ls5i5pDBPxxxxxxxxxxxxxxxxxxxx
 ## それぞれ踏み台サーバ(Bastion)とNATのEIPのAllocation ID
 export BASTION_ALLOCATION_ID=eipalloc-xxxxxxxx
 export NAT_ALLOCATION_ID=eipalloc-xxxxxxxx
+
+## EC2
+## 生成したEC2インスタンスを削除する時にEBSも同時に削除するか否か
+## 本番環境ではfalseであるべき。
+export EC2_DELETE_ON_TERMINATION=true
 
 ## Cloud Formation
 ## デプロイを行う際のStack名。テストの際にも使用している

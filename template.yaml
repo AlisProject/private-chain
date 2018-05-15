@@ -8,6 +8,8 @@ Parameters:
     Type: 'String'
   NatAllocationId:
     Type: 'String'
+  EC2DeleteOnTermination:
+    Type: 'String'
   AccountsNewRequestPassword:
     Type: 'String'
   PrivateChainMainSigner:
@@ -36,6 +38,16 @@ Resources:
       Name: PrivateChainVpcLink
       TargetArns:
         - !Ref NLB
+  PrivateChainVPCFlowLog:
+    Type: 'AWS::EC2::FlowLog'
+    Properties:
+      DeliverLogsPermissionArn: !GetAtt
+        - LogRole
+        - Arn
+      LogGroupName: PrivateChainVPCFlowLog
+      ResourceId: !Ref PrivateChain
+      ResourceType: VPC
+      TrafficType: ALL
   NLB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     Properties:
@@ -267,7 +279,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
@@ -292,7 +304,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -317,7 +329,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -342,7 +354,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -391,7 +403,7 @@ Resources:
         - DeviceName: "/dev/sda1"
           Ebs:
             VolumeType: "gp2"
-            DeleteOnTermination: "false"
+            DeleteOnTermination: !Ref EC2DeleteOnTermination
             VolumeSize: "200"
           NoDevice: {}
       Tags:
@@ -488,6 +500,7 @@ Resources:
           Principal:
             Service:
             - ec2.amazonaws.com
+            - vpc-flow-logs.amazonaws.com
           Action:
           - sts:AssumeRole
       Path: "/"

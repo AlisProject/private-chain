@@ -62,23 +62,19 @@ direnv edit
 ```
 
 ## Deploy
-You have to specify all of your environment valuables to `.envrc`.
+You have to specify all of your environment valuables to `.envrc`. before deployment.
 
 ```bash;
-aws cloudformation deploy \
-  --template-file template.yaml \
-  --capabilities CAPABILITY_IAM \
-  --parameter-overrides \
-    ParityNodesAMI=${PARITY_NODES_AMI} \
-    BastionAllocationId=${BASTION_ALLOCATION_ID} \
-    NatAllocationId=${NAT_ALLOCATION_ID} \
-    AccountsNewRequestTemplate=${ACCOUNTS_NEW_REQUEST_TEMPLATE} \
-    WalletBalanceRequestTemplate=${WALLET_BALANCE_REQUEST_TEMPLATE} \
-    ParityNodesInstanceType=${PARITY_NODES_INSTANCE_TYPE} \
-    ParityNodesVolumeSize=${PARITY_NODES_VOLUME_SIZE} \
-    PrivateChainMainSigner=${PRIVATE_CHAIN_MAIN_SIGNER} \
-    PrivateChainAlisTokenAddress=${PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS} \
-  --stack-name ${CLOUDFORMATION_STACK_NAME}privatechain
+./deploy.sh
+```
+
+### Fix API settings via a script
+
+```bash
+# Set PRIVATE_CHAIN_REST_API_ID to .envrc
+direnv edit
+
+./fix_api.sh
 ```
 
 ## After deployment
