@@ -53,7 +53,7 @@ aws ec2 allocate-address --domain vpc \
 ```
 
 # Set SSM valuables
-You have to specify all of your SSM valuables.
+You have to specify SSM valuables as can as possible.
 - See: https://github.com/AlisProject/environment
 
 
