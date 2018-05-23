@@ -1,0 +1,5 @@
+# AWS CLI
+# https://github.com/leesoh/ansible-role-pipenv
+# https://github.com/ChromaticHQ/ansible-role-aws-cli
+- src: leesoh.pipenv
+- src: ChromaticHQ.aws-cli
