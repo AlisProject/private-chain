@@ -79,6 +79,7 @@ direnv edit
 ### Configure servers.
 ```bash
 cd ansible
+ansible-galaxy install -r requirements.yml
 ansible-playbook -i hosts site.yml
 ```
 
