@@ -15,17 +15,19 @@ cp -pr .envrc.sample .envrc
 direnv edit
 ```
 
-# Packer
+# Preparation
+
+## Packer
 Build an AMI that the nodes of Parity PoA.  
 
-## Parity resources
+### Parity resources
 You have to change ETH account keys when you use this in production.
 - `./packer/ansible/roles/parity/templates/PCParityPoA*_key.j2`
 
 Also `spec.json`.
 - `./packer/ansible/roles/parity/templates/spec.json.j2`
 
-## Build
+### Build
 ```bash
 cd ./packer/
 packer build ./parity-poa.json
@@ -49,11 +51,12 @@ aws ec2 allocate-address --domain vpc \
 # For NAT
 aws ec2 allocate-address --domain vpc \
   | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT Key=Component,Value=PrivateChain --resources
+  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT-${ALIS_APP_ID} Key=Component,Value=PrivateChain --resources
 ```
 
 # Set SSM valuables
-You have to specify SSM valuables as can as possible.
+You have to specify SSM valuables as can as possible.  
+Such as EIP information you created above.
 - See: https://github.com/AlisProject/environment
 
 
