@@ -1,0 +1,8 @@
+---
+- name: Add private key to each hosts
+  copy: >
+    dest=/home/ubuntu/.ssh/private-chain
+    owner=ubuntu
+    group=ubuntu
+    mode=0600
+    content="{{ lookup('file', '~/.ssh/private-chain') }}"
