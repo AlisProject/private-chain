@@ -1,4 +1,6 @@
-# private-chain
+[![ALIS](./logo.png)](https://alis.to)  
+An Ethereum private-chain environment for the [ALIS]((https://alis.to)) 
+that using Parity PoA.
 
 # Prerequisite
 - aws-cli
