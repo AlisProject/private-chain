@@ -1,7 +1,17 @@
-[parity-poa]
-PCParityPoA1a
-PCParityPoA2a
-PCParityPoA1c
-PCParityPoA2c
+[parity-poa:children]
+Parity1a
+Parity2a
+Parity1c
+Parity2c
+
 [bastion]
-Bastion
+Bastion ansible_python_interpreter=/usr/bin/python3
+
+[Parity1a]
+PCParityPoA1a
+[Parity2a]
+PCParityPoA2a
+[Parity1c]
+PCParityPoA1c
+[Parity2c]
+PCParityPoA2c
