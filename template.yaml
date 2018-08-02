@@ -305,7 +305,7 @@ Resources:
           Ebs:
             VolumeType: "gp2"
             DeleteOnTermination: !Ref EC2DeleteOnTermination
-            VolumeSize: "200"
+            VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
         - Key: Name
@@ -330,7 +330,7 @@ Resources:
           Ebs:
             VolumeType: "gp2"
             DeleteOnTermination: !Ref EC2DeleteOnTermination
-            VolumeSize: "200"
+            VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
         - Key: Name
@@ -355,7 +355,7 @@ Resources:
           Ebs:
             VolumeType: "gp2"
             DeleteOnTermination: !Ref EC2DeleteOnTermination
-            VolumeSize: "200"
+            VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
         - Key: Name
@@ -404,7 +404,7 @@ Resources:
           Ebs:
             VolumeType: "gp2"
             DeleteOnTermination: !Ref EC2DeleteOnTermination
-            VolumeSize: "200"
+            VolumeSize: !Ref ParityNodesVolumeSize
           NoDevice: {}
       Tags:
         - Key: Name
