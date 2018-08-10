@@ -1,4 +1,6 @@
-# private-chain
+[![ALIS](./logo.png)](https://alis.to)  
+An Ethereum private-chain environment for the [ALIS](https://alis.to) 
+that using Parity PoA.
 
 # Prerequisite
 - aws-cli
@@ -31,9 +33,6 @@ Also `spec.json`.
 ```bash
 cd ./packer/
 packer build ./parity-poa.json
-
-# Add Generated AMI ID to .envrc
-direnv edit
 ```
 
 ## Create EC2 KeyPair
@@ -56,7 +55,7 @@ aws ec2 allocate-address --domain vpc \
 
 # Set SSM valuables
 You have to specify SSM valuables as can as possible.  
-Such as EIP information you created above.
+Such as IAM and EIP information you created above.
 - See: https://github.com/AlisProject/environment
 
 
@@ -79,6 +78,34 @@ direnv edit
 
 ## After deployment
 
+### Connect Instances via Bastion
+- Prerequisite: [ec2ssh](https://github.com/mirakui/ec2ssh) 
+
+```bash
+cp -p .ec2ssh ~/
+vi ~/.ec2ssh
+```
+
+Fix some point for your environment.  
+Then execute `ec2ssh update`.
+
+```bash
+echo -e \\nHost PC*\\n  ProxyCommand ssh -W %h:%p Bastion >> ~/.ssh/config 
+ec2ssh update
+```
+
+Now you can connect:
+
+```bash
+ssh PCParityPoA2a
+```
+
+Also you can use [tmuxinator](https://github.com/tmuxinator/tmuxinator).
+```bash
+cp -p ./private_chain.yml ~/.tmuxinator/
+mux private_chain
+```
+
 ### Configure servers.
 ```bash
 cd ansible
@@ -98,31 +125,3 @@ Such as IAM Policies, and others.
 
 ### Set SSM valuables again
 - See: https://github.com/AlisProject/environment
-
-# Connect Instances via Bastion
-- Prerequisite: [ec2ssh](https://github.com/mirakui/ec2ssh) 
-
-```bash
-cp -p .ec2ssh ~/
-vi ~/.ec2ssh
-```
-
-Fix some place for your environment.  
-Then execute `ec2ssh update`.
-
-```bash
-echo -e \\nHost PC*\\n  ProxyCommand ssh -W %h:%p Bastion >> ~/.ssh/config 
-ec2ssh update
-```
-
-You can connect:
-
-```bash
-ssh PCParityPoA2a
-```
-
-Also you can use [tmuxinator](https://github.com/tmuxinator/tmuxinator).
-```bash
-cp -p ./private_chain.yml ~/.tmuxinator/
-mux private_chain
-```
