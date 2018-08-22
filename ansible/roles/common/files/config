@@ -1,17 +1,17 @@
 # FIXME: Host names
 Host PCParityPoA1a
-  HostName 10.1.0.14
+  HostName 10.1.0.5
   User ubuntu
   IdentityFile ~/.ssh/private-chain
 Host PCParityPoA1c
-  HostName 10.1.0.21
+  HostName 10.1.0.22
   User ubuntu
   IdentityFile ~/.ssh/private-chain
 Host PCParityPoA2a
-  HostName 10.1.0.9
+  HostName 10.1.0.4
   User ubuntu
   IdentityFile ~/.ssh/private-chain
 Host PCParityPoA2c
-  HostName 10.1.0.27
+  HostName 10.1.0.20
   User ubuntu
   IdentityFile ~/.ssh/private-chain

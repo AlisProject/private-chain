@@ -1,18 +1,22 @@
 ---
 - name: Add private key to each hosts
   copy:
-    dest: /home/ubuntu/.ssh/private-chain
-    owner: ubuntu
-    group: ubuntu
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
     mode: 0600
     content: "{{ lookup('file', '~/.ssh/private-chain') }}"
+  with_items:
+    - { dest: "/home/ubuntu/.ssh/private-chain", owner: 'ubuntu', group: 'ubuntu' }
+    - { dest: "/root/.ssh/private-chain", owner: 'root', group: 'root'  }
 
 - name: Copy files
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: ubuntu
-    group: ubuntu
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
     mode: 0644
   with_items:
-    - { src: 'config', dest: "/home/ubuntu/.ssh/config" }
+    - { src: 'config', dest: "/home/ubuntu/.ssh/config", owner: 'ubuntu', group: 'ubuntu' }
+    - { src: 'config', dest: "/root/.ssh/config", owner: 'root', group: 'root'  }

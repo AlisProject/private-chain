@@ -1,0 +1,35 @@
+settings {
+    logfile    = "/var/log/lsyncd.log",
+    statusFile = "/tmp/lsyncd.stat",
+    delay      = 1
+}
+
+sync {
+    default.rsync,
+    source="{{ parity_keys_path }}/",
+    target="ubuntu@{{ lsync_host_1 }}:{{ parity_keys_path }}/",
+    delete=false,
+    rsync = {
+        rsh = "/usr/bin/ssh -i /home/ubuntu/.ssh/private-chain -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    }
+}
+
+sync {
+    default.rsync,
+    source="{{ parity_keys_path }}/",
+    target="ubuntu@{{ lsync_host_2 }}:{{ parity_keys_path }}/",
+    delete=false,
+    rsync = {
+        rsh = "/usr/bin/ssh -i /home/ubuntu/.ssh/private-chain -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    }
+}
+
+sync {
+    default.rsync,
+    source="{{ parity_keys_path }}/",
+    target="ubuntu@{{ lsync_host_3 }}:{{ parity_keys_path }}/",
+    delete=false,
+    rsync = {
+        rsh = "/usr/bin/ssh -i /home/ubuntu/.ssh/private-chain -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    }
+}
