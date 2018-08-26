@@ -1,5 +1,5 @@
 settings {
-    logfile    = "/var/log/lsyncd.log",
+    logfile    = "{{ supervisor_logs_path }}/lsyncd.log",
     statusFile = "/tmp/lsyncd.stat",
     delay      = 1
 }

@@ -46,16 +46,18 @@
 - name: Change permissions for keys directory
   file: path="{{ parity_keys_path }}" state=directory mode=755 owner=ubuntu group=ubuntu recurse=yes
 
-- name: Add lsyncd config
+- name: Add directory for lsyncd config
   file: path=/etc/lsyncd state=directory owner=root group=root mode=0755
 
-- template: src={{ item.src }} dest={{ item.dest }} backup=yes
+- name: Add lsyncd config
+  template: src={{ item.src }} dest={{ item.dest }} backup=yes
   with_items:
     - { src: 'lsyncd.conf.lua.j2', dest: '/etc/lsyncd/lsyncd.conf.lua' }
 
-- name: Start lsyncd
-  systemd:
-    name: lsyncd
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
+- name: Add lsyncd config for supervisor
+  template: src={{ item.src }} dest=/etc/supervisor/conf.d/{{ item.dest }} backup=yes
+  with_items:
+    - { src: 'lsync.conf.j2', dest: 'lsync.conf' }
+
+- name: Reload supervisor to start lsync
+  service: name=supervisor state=reloaded
