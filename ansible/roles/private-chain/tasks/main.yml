@@ -34,3 +34,30 @@
     line: "curl --data '{\"jsonrpc\":\"2.0\",\"method\":\"parity_addReservedPeer\",\"params\":[{{ item }}],\"id\":0}' -H \"Content-Type: application/json\" -X POST localhost:8545"
   with_items:
     - '{{ enodes.results[0].stdout }}'
+
+- name: Install lsyncd
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - lsyncd
+
+- name: Change permissions for keys directory
+  file: path="{{ parity_keys_path }}" state=directory mode=755 owner=ubuntu group=ubuntu recurse=yes
+
+- name: Add directory for lsyncd config
+  file: path=/etc/lsyncd state=directory owner=root group=root mode=0755
+
+- name: Add lsyncd config
+  template: src={{ item.src }} dest={{ item.dest }} backup=yes
+  with_items:
+    - { src: 'lsyncd.conf.lua.j2', dest: '/etc/lsyncd/lsyncd.conf.lua' }
+
+- name: Add lsyncd config for supervisor
+  template: src={{ item.src }} dest=/etc/supervisor/conf.d/{{ item.dest }} backup=yes
+  with_items:
+    - { src: 'lsync.conf.j2', dest: 'lsync.conf' }
+
+- name: Reload supervisor to start lsync
+  service: name=supervisor state=reloaded

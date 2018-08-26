@@ -7,3 +7,7 @@ venv
 # packer, ansible
 *.retry
 hosts
+!ansible/roles/common
+!ansible/roles/bastion
+!ansible/roles/private-chain
+ansible/roles/*

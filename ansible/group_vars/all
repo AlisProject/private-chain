@@ -1,4 +1,6 @@
 ---
 
 parity_base_path: /root/.local/share/io.parity.ethereum
+parity_keys_path: /var/keys
 ethbase_password: YOURPASSWORDHERE
+supervisor_logs_path: /var/log/supervisor/jobs

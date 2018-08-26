@@ -24,8 +24,8 @@
   file: path={{ item }} state=directory owner=root group=root mode=0755
   with_items:
     - "{{ parity_base_path }}"
-    - "{{ parity_base_path }}/keys"
-    - "{{ parity_base_path }}/keys/PrivateChain"
+    - "{{ parity_keys_path }}"
+    - "{{ parity_keys_path }}/PrivateChain"
     - "/var/log/supervisor/jobs"
 
 - name: Deliver configuration files for Parity private chain
