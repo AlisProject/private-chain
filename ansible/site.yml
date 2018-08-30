@@ -6,8 +6,8 @@
   become: yes
 
   roles:
-    - private-chain
     - common
+    - private-chain
 
 - name: Bastion server configrations.
   hosts: bastion
@@ -15,8 +15,8 @@
   become: yes
 
   roles:
+    - common
     - { role: leesoh.pipenv }
     - { role: ChromaticHQ.aws-cli }
     - bastion
-    - common
 
