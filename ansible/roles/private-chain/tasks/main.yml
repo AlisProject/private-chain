@@ -61,3 +61,9 @@
 
 - name: Reload supervisor to start lsync
   service: name=supervisor state=reloaded
+
+- pause:
+    seconds: 10
+
+- name: And restart lsync to fix startup problem.
+  command: /etc/init.d/lsyncd restart
