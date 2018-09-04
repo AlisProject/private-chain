@@ -1,4 +1,12 @@
 ---
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - build-essential
+
 - name: Create dirctries
   file: path={{ item }} state=directory owner=root group=root mode=0755
   with_items:
