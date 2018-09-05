@@ -210,6 +210,52 @@ Resources:
                           PrivateChainMainSigner: !Ref PrivateChainMainSigner,
                           PrivateChainAlisTokenAddress: !Ref PrivateChainAlisTokenAddress
                         }
+          /wallet/tip:
+            post:
+              description: '投げ銭を行う'
+              responses:
+                '200':
+                  description: '投げ銭リクエスト受付結果'
+                  schema:
+                    type: object
+                    properties:
+                      from_user_eth_address:
+                        type: 'string'
+                      to_user_eth_address:
+                        type: 'string'
+                      tip_value:
+                        type: 'integer'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "personal_sendTransaction",
+                          "params": [
+                            {
+                              "from": "$input.json('from_user_eth_address').replaceAll('\"','')",
+                              "to": "${PrivateChainAlisTokenAddress}",
+                              "value": "0x0",
+                              "data": "0xa9059cbb000000000000000000000000$input.json('to_user_eth_address').replaceAll('\"','')$input.json('tip_value').replaceAll('\"','')"
+                            },
+                            "${AccountsNewRequestPassword}"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          AccountsNewRequestPassword: !Ref AccountsNewRequestPassword,
+                          PrivateChainAlisTokenAddress: !Ref PrivateChainAlisTokenAddress
+                        }
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
