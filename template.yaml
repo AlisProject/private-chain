@@ -219,8 +219,12 @@ Resources:
                   schema:
                     type: object
                     properties:
-                      private_eth_address:
+                      from_user_eth_address:
                         type: 'string'
+                      to_user_eth_address:
+                        type: 'string'
+                      tip_value:
+                        type: 'integer'
               x-amazon-apigateway-integration:
                 responses:
                   default:
