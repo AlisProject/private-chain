@@ -1,17 +1,25 @@
 # FIXME: Host names
 Host PCParityPoA1a
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
   HostName 10.1.0.5
   User ubuntu
   IdentityFile ~/.ssh/private-chain
 Host PCParityPoA1c
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
   HostName 10.1.0.22
   User ubuntu
   IdentityFile ~/.ssh/private-chain
 Host PCParityPoA2a
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
   HostName 10.1.0.4
   User ubuntu
   IdentityFile ~/.ssh/private-chain
 Host PCParityPoA2c
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
   HostName 10.1.0.20
   User ubuntu
   IdentityFile ~/.ssh/private-chain
