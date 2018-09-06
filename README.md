@@ -109,9 +109,8 @@ mux private_chain
 ### Configure servers.
 - You have to edit HostNames in `/ansible/roles/common/files/config`
 
-And run:
-
 ```bash
+vi ./ansible/roles/common/files/config
 cd ansible
 ansible-galaxy install -r requirements.yml
 ansible-playbook -i hosts site.yml
