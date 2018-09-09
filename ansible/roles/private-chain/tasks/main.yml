@@ -1,6 +1,6 @@
 ---
 - name: Get validator address
-  shell: "cat {{ parity_base_path }}/keys/PrivateChain/{{ inventory_hostname }} | jq '.address' | sed 's/\"//g'"
+  shell: "cat {{ parity_keys_path }}/PrivateChain/{{ inventory_hostname }} | jq '.address' | sed 's/\"//g'"
   register: validator_address
 
 - name: Add validator to config.toml
