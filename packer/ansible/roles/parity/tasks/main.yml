@@ -41,7 +41,7 @@
     - { src: 'parity.conf.j2', dest: 'parity.conf' }
 
 - name: Deliver ETH account key files
-  template: src={{ item.src }} dest={{ parity_base_path }}//keys/PrivateChain/{{ item.dest }} backup=yes mode=600
+  template: src={{ item.src }} dest={{ parity_keys_path }}/PrivateChain/{{ item.dest }} backup=yes mode=600
   with_items:
     - { src: 'PCParityPoA1a_key.j2', dest: 'PCParityPoA1a' }
     - { src: 'PCParityPoA2a_key.j2', dest: 'PCParityPoA2a' }
