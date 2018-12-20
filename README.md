@@ -112,11 +112,11 @@ mux private_chain
 vi ./ansible/roles/common/files/config
 
 # Also you have to specify your hosts.
+cd ansible
 cp -p hosts.sample hosts
 vi hosts
 
 # Run ansible
-cd ansible
 ansible-galaxy install -p ./roles -r requirements.yml
 ansible-playbook -i hosts site.yml
 ```
