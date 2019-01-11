@@ -41,16 +41,9 @@ aws ec2 create-key-pair --key-name private-chain
 ```
 
 ## Create EIP
+
 ```bash
-# For Bastion server
-aws ec2 allocate-address --domain vpc \
-  | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPBastion-${ALIS_APP_ID} Key=Component,Value=PrivateChain --resources
-  
-# For NAT
-aws ec2 allocate-address --domain vpc \
-  | jq '.AllocationId' \
-  | xargs aws ec2 create-tags --tags Key=Name,Value=EIPNAT-${ALIS_APP_ID} Key=Component,Value=PrivateChain --resources
+./create_eip.sh
 ```
 
 # Set SSM valuables
