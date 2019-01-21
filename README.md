@@ -63,7 +63,10 @@ Such as IAM and EIP information you created above.
 ### Fix API settings via a script
 
 ```bash
-# Set PRIVATE_CHAIN_REST_API_ID to .envrc
+# Get API ID
+aws apigateway get-rest-apis | jq -r --arg ALIS_API_NAME "${ALIS_APP_ID}api" '.items[] | select(.name==$ALIS_API_NAME).id'
+
+# Set API ID to PRIVATE_CHAIN_REST_API_ID in .envrc
 direnv edit
 
 ./fix_api.sh
