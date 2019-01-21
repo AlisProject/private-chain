@@ -12,5 +12,6 @@ Host <%= tags['Name'] %>
   HostName <%= dns_name || public_ip_address ||  private_ip_address %>
   User ubuntu
   IdentityFile ~/.ssh/private-chain
+  StrictHostKeyChecking no
 END
 
