@@ -424,6 +424,17 @@ Resources:
           Value: PrivateSecurityGroup
         - Key: Component
           Value: PrivateChain
+  PrivateLambdaSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PrivateChain
+      GroupName: PrivateLambdaSecurityGroup
+      GroupDescription: Security Group for Private lambda.
+      Tags:
+        - Key: Name
+          Value: PrivateLambdaSecurityGroup
+        - Key: Component
+          Value: PrivateChain
   PCParityPoA1a:
     Type: 'AWS::EC2::Instance'
     Properties:
