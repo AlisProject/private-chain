@@ -370,6 +370,161 @@ Resources:
                           AccountsNewRequestPassword: !Ref AccountsNewRequestPassword,
                           PrivateChainAlisTokenAddress: !Ref PrivateChainAlisTokenAddress
                         }
+          /wallet/relay_events:
+            post:
+              description: 'Relayイベントのログを取得'
+              responses:
+                '200':
+                  description: 'Relayイベントのログ一覧'
+                  schema:
+                    type: object
+                    properties:
+                      events:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_getLogs",
+                          "params": [
+                            {
+                              "fromBlock": "$input.json('from_block').replaceAll('\"','')",
+                              "toBlock": "$input.json('to_block').replaceAll('\"','')",
+                              "address": "${PrivateChainBridgeAddress}",
+                              "topics": [
+                                "0x8069d017e21058b0dc5e31ca39e9f0f5faaf67b059dc97a84fe0f75319cffcc2",
+                                "$input.json('from_user_eth_address').replaceAll('\"','')"
+                              ]
+                            }
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
+          /wallet/apply_relay_events:
+            post:
+              description: 'ApplyRelayイベントのログを取得'
+              responses:
+                '200':
+                  description: 'ApplyRelayイベントのログ一覧'
+                  schema:
+                    type: object
+                    properties:
+                      events:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_getLogs",
+                          "params": [
+                            {
+                              "fromBlock": "$input.json('from_block').replaceAll('\"','')",
+                              "toBlock": "$input.json('to_block').replaceAll('\"','')",
+                              "address": "${PrivateChainBridgeAddress}",
+                              "topics": [
+                                "0xb114698a397e5f7a7c78e5e58f6f59d2c329c988c585a930db7bb099b3d016d6",
+                                null,
+                                "$input.json('from_user_eth_address').replaceAll('\"','')"
+                              ]
+                            }
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
+          /eth/block_number:
+            post:
+              description: '現在のブロック数を取得'
+              responses:
+                '200':
+                  description: '現在のブロック数'
+                  schema:
+                    type: object
+                    properties:
+                      block_number:
+                        type: 'integer'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_blockNumber",
+                          "params": [
+                          ],
+                          "id": 1
+                        }
+                      - {
+                        }
+          /eth/get_block_by_number:
+            post:
+              description: '指定したブロック数のブロック情報を取得'
+              responses:
+                '200':
+                  description: 'ブロック情報'
+                  schema:
+                    type: object
+                    properties:
+                      block:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_blockNumber",
+                          "params": [
+                            "$input.json('block_num').replaceAll('\"','')",
+                            false
+                          ],
+                          "id": 1
+                        }
+                      - {
+                        }
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
