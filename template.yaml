@@ -286,6 +286,47 @@ Resources:
                       "params": ["$input.json('transaction_hash').replaceAll('\"','')"],
                       "id": 1
                     }
+          /wallet/bridge_information:
+            post:
+              description: 'ブリッジの情報を取得'
+              responses:
+                '200':
+                  description: 'ブリッジの情報'
+                  schema:
+                    type: object
+                    properties:
+                      information:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_call",
+                          "params": [
+                            {
+                              "from": "${PrivateChainMainSigner}",
+                              "to": "${PrivateChainBridgeAddress}",
+                              "data": "0xc0da1e68"
+                            },
+                            "latest"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainMainSigner: !Ref PrivateChainMainSigner,
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
           /wallet/approve:
             post:
               description: 'トークンの認可を行う'
