@@ -256,6 +256,34 @@ Resources:
                           AccountsNewRequestPassword: !Ref AccountsNewRequestPassword,
                           PrivateChainAlisTokenAddress: !Ref PrivateChainAlisTokenAddress
                         }
+          /transaction/receipt:
+            post:
+              description: 'トランザクションの詳細を取得する'
+              responses:
+                '200':
+                  description: 'トランザクションの詳細'
+                  schema:
+                    type: object
+                    properties:
+                      transaction_hash:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json: |
+                    {
+                      "jsonrpc": "2.0",
+                      "method": "eth_getTransactionReceipt",
+                      "params": ["$input.json('transaction_hash').replaceAll('\"','')"],
+                      "id": 1
+                    }
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
