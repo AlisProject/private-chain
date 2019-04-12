@@ -499,6 +499,170 @@ Resources:
                       - {
                           PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
                         }
+          /wallet/max_single_relay_amount:
+            post:
+              description: '出金額の最大値の取得'
+              responses:
+                '200':
+                  description: '出金額の最大値'
+                  schema:
+                    type: object
+                    properties:
+                      amount:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_call",
+                          "params": [
+                            {
+                              "from": "${PrivateChainMainSigner}",
+                              "to": "${PrivateChainBridgeAddress}",
+                              "data": "0x34f89513"
+                            },
+                            "latest"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainMainSigner: !Ref PrivateChainMainSigner,
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
+          /wallet/min_single_relay_amount:
+            post:
+              description: '出金額の最小値の取得'
+              responses:
+                '200':
+                  description: '出金額の最小値'
+                  schema:
+                    type: object
+                    properties:
+                      amount:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_call",
+                          "params": [
+                            {
+                              "from": "${PrivateChainMainSigner}",
+                              "to": "${PrivateChainBridgeAddress}",
+                              "data": "0x9f29ffdf"
+                            },
+                            "latest"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainMainSigner: !Ref PrivateChainMainSigner,
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
+          /wallet/relay_fee:
+            post:
+              description: '出金手数料の取得'
+              responses:
+                '200':
+                  description: '出金手数料'
+                  schema:
+                    type: object
+                    properties:
+                      amount:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_call",
+                          "params": [
+                            {
+                              "from": "${PrivateChainMainSigner}",
+                              "to": "${PrivateChainBridgeAddress}",
+                              "data": "0x71d30863"
+                            },
+                            "latest"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainMainSigner: !Ref PrivateChainMainSigner,
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
+          /wallet/relay_paused:
+            post:
+              description: '出金停止中フラグの取得'
+              responses:
+                '200':
+                  description: '出金停止中フラグ'
+                  schema:
+                    type: object
+                    properties:
+                      paused:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_call",
+                          "params": [
+                            {
+                              "from": "${PrivateChainMainSigner}",
+                              "to": "${PrivateChainBridgeAddress}",
+                              "data": "0x69a08a26"
+                            },
+                            "latest"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                          PrivateChainMainSigner: !Ref PrivateChainMainSigner,
+                          PrivateChainBridgeAddress: !Ref PrivateChainBridgeAddress
+                        }
           /eth/block_number:
             post:
               description: '現在のブロック数を取得'
