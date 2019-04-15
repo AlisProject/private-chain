@@ -3,3 +3,5 @@
 contracts_path: /var/contracts
 private_chain_alis_token_address: "0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6"
 private_chain_main_signer_address: "0x7ad8f90cfa071c8420e3f09fe0e413d0c47502e6"
+
+erc20_bridge_path: /var/erc20-bridge

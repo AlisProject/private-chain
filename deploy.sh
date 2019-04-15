@@ -15,4 +15,5 @@ aws cloudformation deploy \
     ParityNodesVolumeSize=${SSM_PARAMS_PREFIX}ParityNodesVolumeSize \
     PrivateChainMainSigner=${SSM_PARAMS_PREFIX}PrivateChainMainSigner \
     PrivateChainAlisTokenAddress=${SSM_PARAMS_PREFIX}PrivateChainAlisTokenAddress \
+    PrivateChainBridgeAddress=${SSM_PARAMS_PREFIX}PrivateChainBridgeAddress \
   --stack-name ${ALIS_APP_ID}privatechain

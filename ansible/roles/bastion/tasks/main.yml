@@ -1,4 +1,8 @@
 ---
+- name: Add apt repositories
+  apt_repository:
+    repo: 'ppa:jonathonf/python-3.6'
+
 - name: Install packages
   apt:
     name: "{{ item }}"
@@ -6,20 +10,27 @@
     update_cache: yes
   with_items:
     - build-essential
+    - python2.7
+    - python3.6
+    - python3.6-venv
 
 - name: Create dirctries
   file: path={{ item }} state=directory owner=root group=root mode=0755
   with_items:
     - "{{ contracts_path }}"
+    - "{{ erc20_bridge_path }}"
 
 - name: Clone resources
   git:
     repo: "{{ item.src }}"
     dest: "{{ item.dest }}"
+    version: "{{ item.version }}"
   with_items:
-    - { src: 'https://github.com/AlisProject/private-chain-contracts.git', dest: "{{ contracts_path }}" }
-    - { src: 'https://github.com/riywo/ndenv', dest: "~/.ndenv" }
-    - { src: 'https://github.com/riywo/node-build.git', dest: "~/.ndenv/plugins/node-build" }
+    - { src: 'https://github.com/AlisProject/private-chain-contracts.git', dest: "{{ contracts_path }}", version: 'HEAD' }
+    - { src: 'https://github.com/AlisProject/erc20-bridge.git', dest: "{{ erc20_bridge_path }}", version: 'HEAD' }
+    - { src: 'https://github.com/riywo/ndenv', dest: "~/.ndenv", version: 'HEAD' }
+    - { src: 'https://github.com/riywo/node-build.git', dest: "~/.ndenv/plugins/node-build", version: 'HEAD' }
+    - { src: 'https://github.com/ethereum/vyper.git', dest: "~/vyper", version: 'v0.1.0-beta.7' }
 
 - name: Add lines to .bashrc
   lineinfile:
@@ -41,3 +52,21 @@
     - "/root/.ndenv/shims/npm install -g yarn"
     - "~/.ndenv/bin/ndenv exec yarn"
     - "~/.ndenv/bin/ndenv exec yarn exec truffle -- install"
+
+- name: Install and prepare modules for erc20-bridge
+  shell: "{{ item }}"
+  environment:
+      PYTHON: /usr/bin/python2.7
+  args:
+    chdir: "{{ erc20_bridge_path }}"
+  with_items:
+    - "~/.ndenv/bin/ndenv install"
+    - "/root/.ndenv/shims/npm install -g yarn"
+    - "~/.ndenv/bin/ndenv exec yarn"
+
+- name: Install vyper for erc20-bridge
+  shell: "{{ item }}"
+  args:
+    chdir: "~/vyper"
+  with_items:
+    - "python3.6 setup.py install"
