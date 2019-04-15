@@ -317,7 +317,7 @@ Resources:
                             {
                               "from": "$input.json('from_user_eth_address').replaceAll('\"','')",
                               "to": "${PrivateChainAlisTokenAddress}",
-                              "data": "0xdd62ed3e000000000000000000000000$input.json('from_user_eth_address').replaceAll('\"','')000000000000000000000000$input.json('spender_eth_address').replaceAll('\"','')"
+                              "data": "0xdd62ed3e000000000000000000000000$input.json('owner_eth_address').replaceAll('\"','')000000000000000000000000$input.json('spender_eth_address').replaceAll('\"','')"
                             },
                             "latest"
                           ],
@@ -358,7 +358,7 @@ Resources:
                               "from": "$input.json('from_user_eth_address').replaceAll('\"','')",
                               "to": "${PrivateChainAlisTokenAddress}",
                               "value": "0x0",
-                              "nonce": $input.json('nonce').replaceAll('\"',''),
+                              "nonce": "$input.json('nonce').replaceAll('\"','')",
                               "data": "0x095ea7b3000000000000000000000000$input.json('spender_eth_address').replaceAll('\"','')$input.json('value').replaceAll('\"','')"
                             },
                             "${AccountsNewRequestPassword}"
@@ -401,7 +401,7 @@ Resources:
                               "from": "$input.json('from_user_eth_address').replaceAll('\"','')",
                               "to": "${PrivateChainBridgeAddress}",
                               "value": "0x0",
-                              "nonce": $input.json('nonce').replaceAll('\"',''),
+                              "nonce": "$input.json('nonce').replaceAll('\"','')",
                               "data": "0xeeec0e24000000000000000000000000$input.json('recipient_eth_address').replaceAll('\"','')$input.json('amount').replaceAll('\"','')"
                             },
                             "${AccountsNewRequestPassword}"
