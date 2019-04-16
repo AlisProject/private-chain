@@ -722,7 +722,7 @@ Resources:
                       - |-
                         {
                           "jsonrpc": "2.0",
-                          "method": "eth_blockNumber",
+                          "method": "eth_getBlockByNumber",
                           "params": [
                             "$input.json('block_num').replaceAll('\"','')",
                             false
