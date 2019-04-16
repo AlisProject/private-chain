@@ -446,7 +446,7 @@ Resources:
                               "address": "${PrivateChainBridgeAddress}",
                               "topics": [
                                 "0x8069d017e21058b0dc5e31ca39e9f0f5faaf67b059dc97a84fe0f75319cffcc2",
-                                "$input.json('from_user_eth_address').replaceAll('\"','')"
+                                "0x000000000000000000000000$input.json('sender_eth_address').replaceAll('\"','')"
                               ]
                             }
                           ],
@@ -490,7 +490,7 @@ Resources:
                               "topics": [
                                 "0xb114698a397e5f7a7c78e5e58f6f59d2c329c988c585a930db7bb099b3d016d6",
                                 null,
-                                "$input.json('from_user_eth_address').replaceAll('\"','')"
+                                "0x000000000000000000000000$input.json('recipient_eth_address').replaceAll('\"','')"
                               ]
                             }
                           ],
