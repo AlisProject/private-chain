@@ -445,7 +445,7 @@ Resources:
                               "toBlock": "$input.json('to_block').replaceAll('\"','')",
                               "address": "${PrivateChainBridgeAddress}",
                               "topics": [
-                                "0x8069d017e21058b0dc5e31ca39e9f0f5faaf67b059dc97a84fe0f75319cffcc2",
+                                "0xb77c820b3a0ee4da03c984a58bfe43cb27cd3297d424e1025014ce0b7de08cc4",
                                 "0x000000000000000000000000$input.json('sender_eth_address').replaceAll('\"','')"
                               ]
                             }
