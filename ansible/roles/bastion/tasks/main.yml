@@ -1,8 +1,4 @@
 ---
-- name: Add apt repositories
-  apt_repository:
-    repo: 'ppa:jonathonf/python-3.6'
-
 - name: Install packages
   apt:
     name: "{{ item }}"
@@ -10,9 +6,8 @@
     update_cache: yes
   with_items:
     - build-essential
-    - python2.7
-    - python3.6
-    - python3.6-venv
+    - zlib1g-dev
+    - libssl-dev
 
 - name: Create dirctries
   file: path={{ item }} state=directory owner=root group=root mode=0755
@@ -30,6 +25,7 @@
     - { src: 'https://github.com/AlisProject/erc20-bridge.git', dest: "{{ erc20_bridge_path }}", version: 'HEAD' }
     - { src: 'https://github.com/riywo/ndenv', dest: "~/.ndenv", version: 'HEAD' }
     - { src: 'https://github.com/riywo/node-build.git', dest: "~/.ndenv/plugins/node-build", version: 'HEAD' }
+    - { src: 'https://github.com/pyenv/pyenv.git', dest: "~/.pyenv", version: 'HEAD' }
     - { src: 'https://github.com/ethereum/vyper.git', dest: "~/vyper", version: 'v0.1.0-beta.7' }
 
 - name: Add lines to .bashrc
@@ -40,6 +36,8 @@
   with_items:
     - 'export PATH="$HOME/.ndenv/bin:$PATH"'
     - 'eval "$(ndenv init -)"'
+    - 'export PYENV_ROOT="$HOME/.pyenv"'
+    - 'export PATH="$PYENV_ROOT/bin:$PATH"'
     - 'export PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS={{ private_chain_alis_token_address }}'
     - 'export PRIVATE_CHAIN_MAIN_SIGNER_ADDRESS={{ private_chain_main_signer_address }}'
 
@@ -53,20 +51,25 @@
     - "~/.ndenv/bin/ndenv exec yarn"
     - "~/.ndenv/bin/ndenv exec yarn exec truffle -- install"
 
+- name: Prepare vyper virtual environment
+  shell: "{{ item }}"
+  with_items:
+    - "/root/.pyenv/bin/pyenv install 3.6.7"
+    - "/root/.pyenv/versions/3.6.7/bin/python -m venv ~/vyper-env"
+
+- name: Install vyper
+  shell: "{{ item }}"
+  with_items:
+    - '/bin/bash -lc "source ~/vyper-env/bin/activate && cd ~/vyper && make"'
+
 - name: Install and prepare modules for erc20-bridge
   shell: "{{ item }}"
   environment:
-      PYTHON: /usr/bin/python2.7
+      PYTHON: /root/.pyenv/versions/2.7.10/bin/python
   args:
     chdir: "{{ erc20_bridge_path }}"
   with_items:
+    - "/root/.pyenv/bin/pyenv install 2.7.10"
     - "~/.ndenv/bin/ndenv install"
     - "/root/.ndenv/shims/npm install -g yarn"
     - "~/.ndenv/bin/ndenv exec yarn"
-
-- name: Install vyper for erc20-bridge
-  shell: "{{ item }}"
-  args:
-    chdir: "~/vyper"
-  with_items:
-    - "python3.6 setup.py install"
