@@ -788,6 +788,17 @@ Resources:
           Value: PrivateSubNet2
         - Key: Component
           Value: PrivateChain
+  PrivateLambdaSubNet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateChain
+      CidrBlock: 10.1.0.128/25
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: PrivateLambdaSubNet
+        - Key: Component
+          Value: PrivateChain
   PrivateSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -810,6 +821,11 @@ Resources:
           ToPort: '8545'
           SourceSecurityGroupId: !Ref PublicSecurityGroup
           Description: 'For RPC from Bastion.'
+        - IpProtocol: tcp
+          FromPort: '8545'
+          ToPort: '8545'
+          SourceSecurityGroupId: !Ref PrivateLambdaSecurityGroup
+          Description: 'For RPC from lambda.'
         - IpProtocol: tcp
           FromPort: '8545'
           ToPort: '8545'
@@ -1056,6 +1072,11 @@ Resources:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
       SubnetId: !Ref PrivateSubNet2
+      RouteTableId: !Ref PrivateRouteTable
+  PrivateLambdaSubnetRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PrivateLambdaSubNet
       RouteTableId: !Ref PrivateRouteTable
   LogRole:
     Type: AWS::IAM::Role
