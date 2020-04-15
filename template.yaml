@@ -766,6 +766,44 @@ Resources:
                         }
                       - {
                         }
+          /eth/send_raw_transaction:
+            post:
+              description: 'トランザクション送信'
+              responses:
+                '200':
+                  description: 'トランザクション送信果'
+                  schema:
+                    type: object
+                    properties:
+                      id:
+                        type: 'integer'
+                      jsonrpc:
+                        type: 'string'
+                      result:
+                        type: 'string'
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 'http://example.com:8545' # VPC Linkの場合は使用しないが定義する必要のある項目
+                httpMethod: POST
+                type: http
+                connectionId: !Ref PrivateChainVpcLink
+                connectionType: VPC_LINK
+                requestTemplates:
+                  application/json:
+                    !Sub
+                      - |-
+                        {
+                          "jsonrpc": "2.0",
+                          "method": "eth_sendRawTransaction",
+                          "params": [
+                            "$input.json('raw_transaction').replaceAll('\"','')"
+                          ],
+                          "id": 1
+                        }
+                      - {
+                        }
   PrivateSubNet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
