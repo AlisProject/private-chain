@@ -1,9 +1,0 @@
-[program:Lsync]
-command=/etc/init.d/lsyncd start
-user=root
-autorestart=true
-stdout_logfile={{ supervisor_logs_path }}/lsyncd.log
-stdout_logfile_maxbytes=1MB
-stdout_logfile_backups=5
-stdout_capture_maxbytes=1MB
-redirect_stderr=true
