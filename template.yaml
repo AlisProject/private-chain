@@ -2,6 +2,8 @@ AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
+  AlisAppId:
+    Type: String
   ParityNodesAMI:
     Type: 'AWS::SSM::Parameter::Value<String>'
   BastionAllocationId:
@@ -837,6 +839,30 @@ Resources:
           Value: PrivateLambdaSubNet
         - Key: Component
           Value: PrivateChain
+  PrivateLambdaMultiAZ1aSubNet:
+    # MultiAZ で Lambda を構成する場合に利用
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateChain
+      CidrBlock: 10.1.0.48/28
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: !Sub "${AlisAppId}-PrivateLambdaMultiAZ1aSubNet"
+        - Key: Component
+          Value: PrivateChain
+  PrivateLambdaMultiAZ1cSubNet:
+    # MultiAZ で Lambda を構成する場合に利用
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PrivateChain
+      CidrBlock: 10.1.0.64/28
+      AvailabilityZone: ap-northeast-1c
+      Tags:
+        - Key: Name
+          Value: !Sub "${AlisAppId}-PrivateLambdaMultiAZ1cSubNet"
+        - Key: Component
+          Value: PrivateChain
   PrivateSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -883,6 +909,18 @@ Resources:
       Tags:
         - Key: Name
           Value: PrivateLambdaSecurityGroup
+        - Key: Component
+          Value: PrivateChain
+  FrontendSecurityGroup:
+    # Frontend（SSR）で Lambda を実行する際に利用。IPを固定することを目的としており、他のリソースにはアクセス不可。
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PrivateChain
+      GroupName: FrontendSecurityGroup
+      GroupDescription: Security Group for frontend.
+      Tags:
+        - Key: Name
+          Value: !Sub "${AlisAppId}-FrontendSecurityGroup"
         - Key: Component
           Value: PrivateChain
   PCParityPoA1a:
@@ -1116,6 +1154,16 @@ Resources:
     Properties:
       SubnetId: !Ref PrivateLambdaSubNet
       RouteTableId: !Ref PrivateRouteTable
+  PrivateLambdaMultiAZ1aSubNetRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PrivateLambdaMultiAZ1aSubNet
+      RouteTableId: !Ref PrivateRouteTable
+  PrivateLambdaMultiAZ1cSubNetRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PrivateLambdaMultiAZ1cSubNet
+      RouteTableId: !Ref PrivateRouteTable
   LogRole:
     Type: AWS::IAM::Role
     Properties:
@@ -1149,3 +1197,21 @@ Resources:
       Path: "/"
       Roles:
       - Ref: LogRole
+
+Outputs:
+  PrivatChainVpcId:
+    Value: !Ref PrivateChain
+    Export:
+      Name: !Sub "${AlisAppId}-PrivateChainVpcId"
+  PrivateLambdaMultiAZ1aSubNetId:
+    Value: !Ref PrivateLambdaMultiAZ1aSubNet
+    Export:
+      Name: !Sub "${AlisAppId}-PrivateLambdaMultiAZ1aSubNetId"
+  PrivateLambdaMultiAZ1cSubNetId:
+    Value: !Ref PrivateLambdaMultiAZ1cSubNet
+    Export:
+      Name: !Sub "${AlisAppId}-PrivateLambdaMultiAZ1cSubNetId"
+  FrontendSecurityGroupId:
+    Value: !Ref FrontendSecurityGroup
+    Export:
+      Name: !Sub "${AlisAppId}-FrontendSecurityGroupId"

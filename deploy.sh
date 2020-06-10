@@ -6,6 +6,7 @@ aws cloudformation deploy \
   --template-file template.yaml \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides \
+    AlisAppId=${ALIS_APP_ID} \
     ParityNodesAMI=${SSM_PARAMS_PREFIX}ParityNodesAMI \
     BastionAllocationId=${SSM_PARAMS_PREFIX}BastionAllocationId \
     NatAllocationId=${SSM_PARAMS_PREFIX}NatAllocationId \
